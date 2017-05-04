@@ -1,8 +1,5 @@
 package com.sikeandroid.nationdaily.cosplay;
 
-/**
- * Created by Administrator on 2017/4/25.
- */
 
 public class Cloth {
   public static String NATION_CLOTH_ID = "nation_cloth_id";

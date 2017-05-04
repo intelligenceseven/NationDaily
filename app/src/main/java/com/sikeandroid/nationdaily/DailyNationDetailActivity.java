@@ -28,13 +28,6 @@ import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder;
 import java.util.Arrays;
 import java.util.List;
 
-/********************************************************************************
- * using for:
- * 丁酉鸡年二月 2017/04/03 10:52
- * @author 西唐王, xtwyzh@gmail.com,xtwroot.com
- * xtwroot Copyrights (c) 2017. All rights reserved.
- ********************************************************************************/
-
 public class DailyNationDetailActivity extends AppCompatActivity
     implements DrawerAdapter.OnItemSelectedListener {
 

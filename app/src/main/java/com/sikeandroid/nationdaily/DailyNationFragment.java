@@ -14,13 +14,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.sikeandroid.nationdaily.data.DailyNation;
 import com.sikeandroid.nationdaily.data.DailyNationLab;
-
-/********************************************************************************
- * using for:
- * 丁酉鸡年二月 2017/04/03 11:03
- * @author 西唐王, xtwyzh@gmail.com,xtwroot.com
- * xtwroot Copyrights (c) 2017. All rights reserved.
- ********************************************************************************/
 public class DailyNationFragment extends Fragment {
 
     private DailyNation mDailyNation;

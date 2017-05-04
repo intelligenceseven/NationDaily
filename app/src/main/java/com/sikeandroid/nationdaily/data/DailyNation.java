@@ -2,12 +2,6 @@ package com.sikeandroid.nationdaily.data;
 
 import java.util.UUID;
 
-/********************************************************************************
- * using for:
- * 丁酉鸡年二月 2017/04/02 20:11
- * @author 西唐王, xtwyzh@gmail.com,xtwroot.com
- * xtwroot Copyrights (c) 2017. All rights reserved.
- ********************************************************************************/
 public class DailyNation {
 
     private UUID mId;

@@ -14,9 +14,6 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.FrameLayout;
 import com.sikeandroid.nationdaily.R;
 
-/**
- * Created by chengwan on 2017/3/20.
- */
 
 public class ScanView extends FrameLayout {
     private Context mContext;

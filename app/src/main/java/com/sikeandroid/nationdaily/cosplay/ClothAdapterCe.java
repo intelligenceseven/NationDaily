@@ -13,10 +13,6 @@ import com.sikeandroid.nationdaily.R;
 import java.util.List;
 
 
-/**
- * Created by Administrator on 2017/4/25.
- */
-
 public class ClothAdapterCe extends RecyclerView.Adapter<ClothAdapterCe.ViewHolder> {
   private Context mContext;
   private List<Cloth> mClothList;

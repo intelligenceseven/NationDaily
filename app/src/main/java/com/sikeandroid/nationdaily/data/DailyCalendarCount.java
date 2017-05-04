@@ -1,16 +1,10 @@
 package com.sikeandroid.nationdaily.data;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
 import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
 
-
-/**
- * Created by KingChaos on 2017/4/24.
- */
 
 public class DailyCalendarCount {
     private int year;

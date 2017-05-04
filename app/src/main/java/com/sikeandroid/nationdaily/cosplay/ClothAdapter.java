@@ -13,9 +13,7 @@ import com.bumptech.glide.Glide;
 import com.sikeandroid.nationdaily.R;
 import java.util.List;
 
-/**
- * Created by Administrator on 2017/4/25.
- */
+
 
 public class ClothAdapter extends RecyclerView.Adapter<ClothAdapter.ViewHolder> {
   private Context mContext;

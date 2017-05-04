@@ -12,9 +12,6 @@ import com.sikeandroid.nationdaily.R;
 
 import static com.sikeandroid.nationdaily.cosplay.ARCosplay.clothList;
 
-/**
- * Created by Administrator on 2017/5/2.
- */
 
 public class ClothesFragment extends Fragment {
   public View view;

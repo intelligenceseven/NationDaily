@@ -8,13 +8,6 @@ import android.view.View;
 
 import com.github.zagum.expandicon.ExpandIconView;
 
-/********************************************************************************
- * using for:
- * 丁酉鸡年正月 2017/04/13 19:08
- * @author 西唐王, xtwyzh@gmail.com,xtwroot.com
- * xtwroot Copyrights (c) 2017. All rights reserved.
- ********************************************************************************/
-
 public class NationHistoryActivity extends AppCompatActivity implements GestureDetector.OnGestureListener {
 
   private ExpandIconView expandIconView1;

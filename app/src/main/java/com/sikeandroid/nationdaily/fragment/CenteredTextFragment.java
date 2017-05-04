@@ -11,10 +11,6 @@ import android.widget.TextView;
 import com.sikeandroid.nationdaily.R;
 
 
-/**
- * Created by yarolegovich on 25.03.2017.
- */
-
 public class CenteredTextFragment extends Fragment {
 
     private static final String EXTRA_TEXT = "text";

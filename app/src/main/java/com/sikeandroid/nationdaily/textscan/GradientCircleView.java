@@ -13,9 +13,6 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 
-/**
- * Created by chanwan on 2017/3/20 0020.
- */
 
 public class GradientCircleView extends View {
     private Context mContext;

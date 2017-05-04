@@ -9,9 +9,7 @@ import android.widget.TextView;
 
 import com.sikeandroid.nationdaily.R;
 
-/**
- * Created by yarolegovich on 25.03.2017.
- */
+
 public class SimpleItem extends DrawerItem<SimpleItem.ViewHolder> {
 
     private int selectedItemIconTint;
