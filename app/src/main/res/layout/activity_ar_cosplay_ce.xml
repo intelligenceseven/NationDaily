@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.sikeandroid.nationdaily.cosplay.ARCosplay"
+    android:background="@drawable/diwen4"
+
+    >
+
+  <Button
+      android:layout_width="match_parent"
+      android:layout_height="?attr/actionBarSize"
+      android:background="#fff"
+      android:text="民族服装"
+      android:textSize="30dp"
+
+      />
+  <android.support.v7.widget.RecyclerView
+
+      android:id="@+id/clothes"
+      android:layout_width="wrap_content"
+      android:layout_height="match_parent"
+      android:layout_marginTop="5dp"
+      android:layout_gravity="center_horizontal"
+      />
+
+</LinearLayout>
