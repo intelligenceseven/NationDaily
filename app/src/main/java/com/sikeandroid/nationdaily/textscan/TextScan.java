@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import com.sikeandroid.nationdaily.R;
 import com.sikeandroid.nationdaily.cosplay.CameraPreview;
@@ -19,6 +21,7 @@ public class TextScan extends AppCompatActivity {
   public static final int FLAG_OPEN = 1;
   public static final int FLAG_CLOSE = 0;
   private int flashFlag = FLAG_CLOSE;
+  private Button scanText;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate( savedInstanceState );
@@ -47,7 +50,29 @@ public class TextScan extends AppCompatActivity {
         mPreview.getCameraInstance().setParameters( parameters );
       }
     } );*/
+    scanText = (Button) findViewById( R.id.scan_text );
+    scanText.setOnClickListener( new View.OnClickListener() {
+      @Override public void onClick(View v) {
+        scanThread();
+      }
+    } );
   }
+
+  private void scanThread() {
+
+    new Thread( new Runnable() {
+      @Override public void run() {
+        try {
+          mPreview.scanText();
+          Thread.sleep( 1000 );
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
+      }
+    } ).start();
+  }
+
+
 
   private void initCamera() {
 
@@ -94,7 +119,6 @@ public class TextScan extends AppCompatActivity {
       case android.R.id.home:
         finish();
         break;
-
     }
     return true;
   }

@@ -60,7 +60,7 @@ public class DailyNationDetailActivity extends AppCompatActivity
         switch (item.getItemId()) {
           case R.id.scan_menu:
             Intent intent = new Intent( "android.media.action.IMAGE_CAPTURE" );
-            //Intent intent = new Intent( DailyNationDetailActivity.this, TextScan.class );
+            //intent = new Intent( DailyNationDetailActivity.this, TextScan.class );
             startActivity( intent );
 
             break;

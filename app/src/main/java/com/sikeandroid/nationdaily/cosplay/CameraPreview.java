@@ -4,7 +4,9 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.hardware.Camera;
 import android.net.Uri;
 import android.util.Log;
@@ -21,7 +23,6 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
 
   private static final String TAG = "CameraPreview";
@@ -30,6 +31,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
   public static final int FRONT_CAMERA = 1;
   public static final int BACK_CAMERA = 0;
   public static int cameraFlag = FRONT_CAMERA;
+  private boolean safeToTakePicture = false;
 
   public CameraPreview(Context context) {
     super( context );
@@ -39,10 +41,11 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
   public Camera getCameraInstance() {
     if (mCamera == null) {
-      Log.d( TAG, "Camera number: " + Camera.getNumberOfCameras() );
+      //Log.d( TAG, "Camera number: " + Camera.getNumberOfCameras() );
       try {
         mCamera = Camera.open( cameraFlag );
       } catch (Exception e) {
+        e.printStackTrace();
         Log.d( TAG, "camera is not available" );
       }
     }
@@ -54,6 +57,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     try {
       mCamera.setPreviewDisplay( holder );
       mCamera.startPreview();
+      safeToTakePicture = true;
     } catch (IOException e) {
       Log.d( TAG, "Error setting camera preview: " + e.getMessage() );
     }
@@ -86,10 +90,10 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
   private String outputMediaFileType;
 
   private File getOutputMediaFile() {
-    File mediaStorageDir = new File( "/sdcard/com.sike.android" );
+    File mediaStorageDir = new File( "/sdcard/com.sike.android/DCIM" );
     //Log.d( TAG, "getOutputMediaFile: " + mediaStorageDir.toString() );
     if (!mediaStorageDir.exists()) {
-      if (!mediaStorageDir.mkdir()) {
+      if (!mediaStorageDir.mkdirs()) {
         //Log.d( TAG, "failed to create directory" );
         return null;
       }
@@ -111,7 +115,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
   }
 
   public void takePicture(final ImageView view) {
-    mCamera.takePicture( null, null, new Camera.PictureCallback() {
+    Camera.PictureCallback mPicture = new Camera.PictureCallback() {
       @Override public void onPictureTaken(byte[] data, Camera camera) {
         File pictureFile = getOutputMediaFile();
         if (pictureFile == null) {
@@ -138,10 +142,68 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
           //view.setImageURI( outputMediaFileUri );
           camera.startPreview();
+          safeToTakePicture = true;
         } catch (FileNotFoundException e) {
           Log.d( TAG, "File not found:" + e.getMessage() );
         } catch (IOException e) {
           Log.d( TAG, "Error accessing file:" + e.getMessage() );
+        }
+      }
+    };
+    if (safeToTakePicture) {
+
+      mCamera.takePicture( null, null, mPicture );
+      safeToTakePicture = false;
+    }
+  }
+
+  public void scanText() {
+    final File mediaStorageDir = new File( "/sdcard/com.sike.android" );
+    //Log.d( TAG, "getOutputMediaFile: " + mediaStorageDir.toString() );
+    if (!mediaStorageDir.exists()) {
+      if (!mediaStorageDir.mkdirs()) {
+        Log.d( TAG, "failed to create directory" );
+        return;
+      }
+    }
+    mCamera.takePicture( null, null, new Camera.PictureCallback() {
+      @Override public void onPictureTaken(byte[] data, Camera camera) {
+        //File textPhoto = new File( "/storage/emulated/0/DCIM/Camera", "text.jpg" );
+        File textPhoto = new File( "/sdcard/com.sike.android", "text.jpg" );
+        if (textPhoto.exists()) {
+          textPhoto.delete();
+          Log.d( TAG, "删除成功" );
+        }
+        try {
+          FileOutputStream fos = new FileOutputStream( textPhoto );
+          fos.write( data );
+          fos.close();
+          Bitmap srcBitmap = BitmapFactory.decodeFile( textPhoto.getAbsolutePath() );
+          Matrix matrix = new Matrix();
+          matrix.setScale( 0.25f, 0.25f );
+          Bitmap midBitmap = Bitmap.createBitmap( srcBitmap, 340, 726, 380, 486, matrix, false );
+          //midBitmap.compress( Bitmap.CompressFormat.PNG, 100, fos );
+
+          //Log.d( TAG, "" );
+          Bitmap destBitmap = Bitmap.createBitmap( 700, 800, Bitmap.Config.ARGB_8888 );
+          Canvas canvas = new Canvas( destBitmap );
+          Paint paint = new Paint();
+          paint.setColor( Color.WHITE );
+          paint.setStyle( Paint.Style.FILL );
+          canvas.drawRect( 0, 0, 700, 800, paint );
+          canvas.drawBitmap( midBitmap, 302, 340, null );
+          fos = new FileOutputStream( textPhoto );
+
+          fos = new FileOutputStream( textPhoto );
+          destBitmap.compress( Bitmap.CompressFormat.JPEG, 100, fos );
+          fos.flush();
+
+          fos.close();
+
+          camera.startPreview();
+          Log.d( TAG, "保存成功" );
+        } catch (IOException e) {
+          e.printStackTrace();
         }
       }
     } );

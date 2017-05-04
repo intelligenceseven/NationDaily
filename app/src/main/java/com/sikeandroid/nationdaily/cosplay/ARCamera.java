@@ -35,8 +35,6 @@ public class ARCamera extends AppCompatActivity {
 
   //public DrawerLayout drawClothes;
   private ImageButton flash;
-  private ImageView flashBg;
-
   private int flashFlag = FLAG_CLOSE;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
@@ -52,31 +50,27 @@ public class ARCamera extends AppCompatActivity {
     changeCamera = (ImageButton) findViewById( R.id.change_camera );
     mainInterface = (FrameLayout) findViewById( R.id.main_interface );
 
-    flashBg = (ImageView) findViewById( R.id.flash_bg );
-
     flash = (ImageButton) findViewById( R.id.flash );
     if (CameraPreview.cameraFlag == CameraPreview.BACK_CAMERA) {
 
       flash.setVisibility( View.VISIBLE );
-      flashBg.setVisibility( View.VISIBLE );
       flash.setOnClickListener( new View.OnClickListener() {
         @Override public void onClick(View v) {
           Camera.Parameters parameters = mPreview.getCameraInstance().getParameters();
           if (flashFlag == FLAG_CLOSE) {
             parameters.setFlashMode( Camera.Parameters.FLASH_MODE_TORCH );
             flashFlag = FLAG_OPEN;
-            flash.setBackgroundResource( R.drawable.ic_flash_on_black_24dp );
+            flash.setBackgroundResource( R.drawable.flash_on );
           } else {
             parameters.setFlashMode( Camera.Parameters.FLASH_MODE_OFF );
             flashFlag = FLAG_CLOSE;
-            flash.setBackgroundResource( R.drawable.ic_flash_off_black_24dp );
+            flash.setBackgroundResource( R.drawable.flash_off );
           }
           mPreview.getCameraInstance().setParameters( parameters );
         }
       } );
     } else {
       flash.setVisibility( View.GONE );
-      flashBg.setVisibility( View.GONE );
     }
 
     //传入衣服
@@ -84,12 +78,12 @@ public class ARCamera extends AppCompatActivity {
 
     takePhoto.setOnClickListener( new View.OnClickListener() {
       @Override public void onClick(View v) {
-        new Thread() {
-          @Override public void run() {
-            super.run();
-            mPreview.takePicture( mediaPreview );
-          }
-        }.start();
+        //new Thread() {
+        //  @Override public void run() {
+        //    super.run();
+        mPreview.takePicture( mediaPreview );
+        //}
+        //}.start();
       }
     } );
 

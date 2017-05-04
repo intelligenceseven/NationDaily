@@ -16,7 +16,9 @@ public class SettingsCamera {
     mParameters.setPictureSize( 1920, 1080 );
     mParameters.setJpegQuality( 100 );
     mParameters.setFocusMode( "continuous-picture" );
-    mParameters.setFlashMode( "off" );
+    if (CameraPreview.cameraFlag == CameraPreview.BACK_CAMERA) {
+      mParameters.setFlashMode( "off" );
+    }
     mCamera.stopPreview();
     mCamera.setParameters( mParameters );
     mCamera.startPreview();
