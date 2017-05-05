@@ -4,9 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Matrix;
-import android.graphics.Paint;
 import android.hardware.Camera;
 import android.net.Uri;
 import android.util.Log;
@@ -16,9 +14,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.Toast;
 import com.sikeandroid.nationdaily.cosplay.ARCamera;
-import com.tianruiworkroomocr.Native;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -162,46 +158,6 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
       mCamera.takePicture( null, null, mPicture );
       safeToTakePicture = false;
     }
-  }
-
-  public void scanText() {
-    mCamera.takePicture( null, null, new Camera.PictureCallback() {
-      @Override public void onPictureTaken(byte[] data, Camera camera) {
-
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inTargetDensity = options.inDensity;
-        Bitmap srcBitmap = BitmapFactory.decodeByteArray( data, 0, data.length, options );
-        //Log.d( TAG, "srcBitmap width:" + srcBitmap.getWidth() + "height:" + srcBitmap.getHeight() );
-        Matrix matrix = new Matrix();
-        matrix.setScale( 0.25f, 0.25f );
-        Bitmap midBitmap = Bitmap.createBitmap( srcBitmap, 340, 726, 380, 486, matrix, false );
-        Bitmap destBitmap = Bitmap.createBitmap( 700, 800, Bitmap.Config.ARGB_8888 );
-        Canvas canvas = new Canvas( destBitmap );
-        Paint paint = new Paint();
-        paint.setColor( Color.BLACK );
-        paint.setStyle( Paint.Style.FILL );
-        canvas.drawRect( 0, 0, 700, 800, paint );
-        canvas.drawBitmap( midBitmap, 302, 340, null );
-
-        int picw = destBitmap.getWidth();
-        int pich = destBitmap.getHeight();
-        int[] pix = new int[pich * picw];
-        destBitmap.getPixels( pix, 0, picw, 0, 0, picw, pich );
-        int rlt = Native.recognizeImage( pix, picw, pich );
-
-        if (rlt == 1) {
-          String mwholeWord[] = Native.getWholeTextLineResult();
-          if (mwholeWord != null) {
-            Log.e( TAG, mwholeWord[0] );
-            Toast.makeText( getContext(), mwholeWord[0], Toast.LENGTH_SHORT ).show();
-          }
-        } else {
-          Log.e( TAG, "OcrThread: 无法识别" );
-        }
-
-        camera.startPreview();
-      }
-    } );
   }
 
   public int getDisplayOrientation() {

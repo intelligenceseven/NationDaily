@@ -59,4 +59,13 @@
       android:layout_gravity="center|bottom"
       android:text="扫描"
       />
+  <ImageView
+      android:id="@+id/scan_image"
+      android:layout_width="400px"
+      android:layout_height="400px"
+      android:layout_marginTop="180px"
+      android:background="#000"
+      android:scaleType="centerInside"
+      />
+
 </FrameLayout>

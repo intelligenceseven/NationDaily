@@ -14,9 +14,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.Toast;
 import com.sikeandroid.nationdaily.R;
 import com.sikeandroid.nationdaily.util.CameraPreview;
+import com.sikeandroid.nationdaily.util.OCRScan;
 import com.sikeandroid.nationdaily.util.SettingsCamera;
 import com.tianruiworkroomocr.Native;
 import java.util.Timer;
@@ -25,7 +27,8 @@ import java.util.TimerTask;
 public class TextScan extends AppCompatActivity {
 
   private ScanView scanView;
-  private CameraPreview mPreview;
+  private OCRScan mPreview;
+  private ImageView scanImage;
   public static final int FLAG_OPEN = 1;
   public static final int FLAG_CLOSE = 0;
   private int flashFlag = FLAG_CLOSE;
@@ -45,7 +48,7 @@ public class TextScan extends AppCompatActivity {
 
   Handler handler = new Handler() {
     @Override public void handleMessage(Message msg) {
-      mPreview.scanText();
+      mPreview.scanText( scanImage );
       super.handleMessage( msg );
     }
   };
@@ -85,16 +88,7 @@ public class TextScan extends AppCompatActivity {
       }
     } );
     timer.schedule( task, 4000, 2000 );
-  }
-
-  private void scanThread() {
-
-    new Thread( new Runnable() {
-      @Override public void run() {
-        mPreview.scanText();
-        //Thread.sleep( 1000 );
-      }
-    } ).start();
+    scanImage = (ImageView) findViewById( R.id.scan_image );
   }
 
   private void OcrThread() {
@@ -128,7 +122,7 @@ public class TextScan extends AppCompatActivity {
   private void initCamera() {
 
     CameraPreview.cameraFlag = CameraPreview.BACK_CAMERA;
-    mPreview = new CameraPreview( this );
+    mPreview = new OCRScan( this );
     FrameLayout preview = (FrameLayout) findViewById( R.id.scan_camera );
     preview.addView( mPreview );
     SettingsCamera.passCamera( mPreview.getCameraInstance() );
