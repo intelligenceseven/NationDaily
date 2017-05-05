@@ -1,4 +1,4 @@
-package com.sikeandroid.nationdaily.cosplay;
+package com.sikeandroid.nationdaily.util;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -17,9 +17,8 @@ import android.view.SurfaceView;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.Toast;
-
+import com.sikeandroid.nationdaily.cosplay.ARCamera;
 import com.tianruiworkroomocr.Native;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -51,6 +50,13 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
       } catch (Exception e) {
         e.printStackTrace();
         Log.d( TAG, "camera is not available" );
+        if (cameraFlag == FRONT_CAMERA) {
+          cameraFlag = BACK_CAMERA;
+          mCamera = Camera.open( cameraFlag );
+        } else {
+          cameraFlag = FRONT_CAMERA;
+          mCamera = Camera.open( cameraFlag );
+        }
       }
     }
     return mCamera;
@@ -104,7 +110,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     }
     String timeStamp = new SimpleDateFormat( "yyyyMMdd_HHmmss" ).format( new Date() );
     File mediaFile =
-            new File( mediaStorageDir.getPath() + File.separator + "IMG_" + timeStamp + ".jpg" );
+        new File( mediaStorageDir.getPath() + File.separator + "IMG_" + timeStamp + ".jpg" );
     outputMediaFileType = "image/*";
     outputMediaFileUri = Uri.fromFile( mediaFile );
     return mediaFile;
@@ -127,24 +133,19 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
           return;
         }
         try {
-          FileOutputStream fos = new FileOutputStream( pictureFile );
-          fos.write( data );
-          fos.close();
-          //Bitmap srcBitmap = BitmapFactory.decodeFile( pictureFile.getAbsolutePath() );
-          //view.setImageBitmap( srcBitmap );
+          BitmapFactory.Options options = new BitmapFactory.Options();
+          options.inTargetDensity = options.inDensity;
+          Bitmap srcBitmap = BitmapFactory.decodeByteArray( data, 0, data.length, options );
 
           Bitmap destBitmap =
-                  createWatermark( getContext(), pictureFile, ARCamera.nationClothesId );
+              createWatermark( getContext(), srcBitmap, ARCamera.nationClothesId, options );
           //Log.d( TAG, "onPictureTaken: " + destBitmap.getByteCount() );
           view.setImageBitmap( destBitmap );
-
-          fos = new FileOutputStream( pictureFile );
+          FileOutputStream fos = new FileOutputStream( pictureFile );
           destBitmap.compress( Bitmap.CompressFormat.JPEG, 100, fos );
 
           fos.flush();
           fos.close();
-
-
 
           //view.setImageURI( outputMediaFileUri );
           camera.startPreview();
@@ -164,82 +165,48 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
   }
 
   public void scanText() {
-    final File mediaStorageDir = new File( "/sdcard/com.sike.android" );
-    //Log.d( TAG, "getOutputMediaFile: " + mediaStorageDir.toString() );
-    if (!mediaStorageDir.exists()) {
-      if (!mediaStorageDir.mkdirs()) {
-        Log.d( TAG, "failed to create directory" );
-        return;
-      }
-    }
     mCamera.takePicture( null, null, new Camera.PictureCallback() {
       @Override public void onPictureTaken(byte[] data, Camera camera) {
-        //File textPhoto = new File( "/storage/emulated/0/DCIM/Camera", "text.jpg" );
 
-        File textPhoto = new File( "/sdcard/com.sike.android", "text.jpg" );
-        if (textPhoto.exists()) {
-          textPhoto.delete();
-          Log.d( TAG, "删除成功" );
-        }
-        try {
-          FileOutputStream fos = new FileOutputStream( textPhoto );
-          fos.write( data );
-          fos.close();
-          Bitmap srcBitmap = BitmapFactory.decodeFile( textPhoto.getAbsolutePath() );
-          Matrix matrix = new Matrix();
-          matrix.setScale( 0.25f, 0.25f );
-          Bitmap midBitmap = Bitmap.createBitmap( srcBitmap, 340, 726, 380, 486, matrix, false );
-          //midBitmap.compress( Bitmap.CompressFormat.PNG, 100, fos );
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inTargetDensity = options.inDensity;
+        Bitmap srcBitmap = BitmapFactory.decodeByteArray( data, 0, data.length, options );
+        //Log.d( TAG, "srcBitmap width:" + srcBitmap.getWidth() + "height:" + srcBitmap.getHeight() );
+        Matrix matrix = new Matrix();
+        matrix.setScale( 0.25f, 0.25f );
+        Bitmap midBitmap = Bitmap.createBitmap( srcBitmap, 340, 726, 380, 486, matrix, false );
+        Bitmap destBitmap = Bitmap.createBitmap( 700, 800, Bitmap.Config.ARGB_8888 );
+        Canvas canvas = new Canvas( destBitmap );
+        Paint paint = new Paint();
+        paint.setColor( Color.BLACK );
+        paint.setStyle( Paint.Style.FILL );
+        canvas.drawRect( 0, 0, 700, 800, paint );
+        canvas.drawBitmap( midBitmap, 302, 340, null );
 
-          //Log.d( TAG, "" );
-          Bitmap destBitmap = Bitmap.createBitmap( 700, 800, Bitmap.Config.ARGB_8888 );
-          Canvas canvas = new Canvas( destBitmap );
-          Paint paint = new Paint();
-          paint.setColor( Color.BLACK );
-          paint.setStyle( Paint.Style.FILL );
-          canvas.drawRect( 0, 0, 700, 800, paint );
-          canvas.drawBitmap( midBitmap, 302, 340, null );
-          fos = new FileOutputStream( textPhoto );
+        int picw = destBitmap.getWidth();
+        int pich = destBitmap.getHeight();
+        int[] pix = new int[pich * picw];
+        destBitmap.getPixels( pix, 0, picw, 0, 0, picw, pich );
+        int rlt = Native.recognizeImage( pix, picw, pich );
 
-          fos = new FileOutputStream( textPhoto );
-          destBitmap.compress( Bitmap.CompressFormat.JPEG, 100, fos );
-          fos.flush();
-
-          fos.close();
-
-          int picw = destBitmap.getWidth();
-          int pich = destBitmap.getHeight();
-          int[] pix = new int[pich * picw];
-          destBitmap.getPixels(pix,0,picw,0,0,picw,pich);
-          int rlt = Native.recognizeImage(pix,picw,pich);
-
-          if(rlt == 1)
-          {
-            String mwholeWord[] = Native.getWholeTextLineResult();
-            if(mwholeWord != null)
-            {
-              Log.e(TAG,mwholeWord[0]);
-              Toast.makeText(getContext(),mwholeWord[0], Toast.LENGTH_SHORT).show();
-            }
+        if (rlt == 1) {
+          String mwholeWord[] = Native.getWholeTextLineResult();
+          if (mwholeWord != null) {
+            Log.e( TAG, mwholeWord[0] );
+            Toast.makeText( getContext(), mwholeWord[0], Toast.LENGTH_SHORT ).show();
           }
-          else
-          {
-            Log.e(TAG, "OcrThread: 无法识别");
-          }
-
-
-          camera.startPreview();
-          Log.d( TAG, "保存成功" );
-        } catch (IOException e) {
-          e.printStackTrace();
+        } else {
+          Log.e( TAG, "OcrThread: 无法识别" );
         }
+
+        camera.startPreview();
       }
     } );
   }
 
   public int getDisplayOrientation() {
     Display display = ((WindowManager) getContext().getSystemService(
-            Context.WINDOW_SERVICE )).getDefaultDisplay();
+        Context.WINDOW_SERVICE )).getDefaultDisplay();
     int rotation = display.getRotation();
     int degrees = 0;
     switch (rotation) {
@@ -262,28 +229,15 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     return result;
   }
 
-  /**
-   * 添加水印
-   *
-   * @param context 上下文
-   * @param markBitmapId 水印图片
-   * @return bitmap      打了水印的图
-   */
-  public static Bitmap createWatermark(Context context, File srcFile, int markBitmapId) {
-    BitmapFactory.Options options = new BitmapFactory.Options();
-    options.inTargetDensity = options.inDensity;
-    Bitmap bitmap = BitmapFactory.decodeFile( srcFile.getAbsolutePath(), options );
+  public static Bitmap createWatermark(Context context, Bitmap bitmap, int markBitmapId,
+      BitmapFactory.Options options) {
+
     if (cameraFlag == FRONT_CAMERA) {
       Matrix matrix = new Matrix();
       matrix.setScale( -1, 1 );
       matrix.postTranslate( bitmap.getWidth(), 0 );
       bitmap =
-              Bitmap.createBitmap( bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true );
-    }
-
-    // 当水印图片没有的时候，返回原图
-    if (markBitmapId == 0) {
-      return bitmap;
+          Bitmap.createBitmap( bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true );
     }
 
     // 获取图片的宽高
@@ -300,20 +254,12 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
       // 载入水印图片
 
       Bitmap markBitmap =
-              BitmapFactory.decodeResource( context.getResources(), markBitmapId, options );
+          BitmapFactory.decodeResource( context.getResources(), markBitmapId, options );
       Log.d( TAG, "bitmap:width=" + bitmapWidth + ",height=" + bitmapHeight );
       int markBitmapWidth = markBitmap.getWidth();
       int markBitmapHeight = markBitmap.getHeight();
       Log.d( TAG, "markBitmap:width=" + markBitmapWidth + ",height=" + markBitmapHeight );
 
-      // 图片开始的坐标
-      //float bitmapX = (float) (bitmapWidth / 2 - markBitmapWidth / 2);//这里的-10和下面的-20都是微调的结果
-      //float bitmapY;
-      //if (cameraFlag == FRONT_CAMERA) {
-      //  bitmapY = (float) 100;
-      //} else {
-      //  bitmapY = (float) (bitmapHeight / 2 - markBitmapHeight / 2);
-      //}
       float bitmapX = ARCamera.clothesX;
       float bitmapY = ARCamera.clothesY;
 

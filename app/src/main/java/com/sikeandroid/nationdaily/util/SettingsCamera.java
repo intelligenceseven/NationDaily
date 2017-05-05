@@ -1,4 +1,4 @@
-package com.sikeandroid.nationdaily.cosplay;
+package com.sikeandroid.nationdaily.util;
 
 import android.hardware.Camera;
 

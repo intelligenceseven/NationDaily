@@ -1,4 +1,4 @@
-package com.sikeandroid.nationdaily;
+package com.sikeandroid.nationdaily.main;
 
 import android.content.Intent;
 import android.os.Build;
@@ -12,8 +12,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
-import com.sikeandroid.nationdaily.data.DailyNation;
-import com.sikeandroid.nationdaily.data.DailyNationLab;
+import com.sikeandroid.nationdaily.R;
+import com.sikeandroid.nationdaily.main.data.DailyNation;
+import com.sikeandroid.nationdaily.main.data.DailyNationLab;
 public class DailyNationFragment extends Fragment {
 
     private DailyNation mDailyNation;
@@ -52,7 +53,7 @@ public class DailyNationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.fragment_daily_nation,container,false);
+        View v = inflater.inflate( R.layout.fragment_daily_nation,container,false);
 
         mImageView = (ImageView)v.findViewById(R.id.image_minzu);
         Glide.with( this ).load( mImage ).into( mImageView );

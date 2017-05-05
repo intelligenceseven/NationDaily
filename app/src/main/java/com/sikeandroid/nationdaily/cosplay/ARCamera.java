@@ -12,6 +12,8 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import com.sikeandroid.nationdaily.R;
+import com.sikeandroid.nationdaily.util.CameraPreview;
+import com.sikeandroid.nationdaily.util.SettingsCamera;
 import java.io.File;
 
 import static com.sikeandroid.nationdaily.textscan.TextScan.FLAG_CLOSE;
@@ -196,7 +198,7 @@ public class ARCamera extends AppCompatActivity {
   }
 
   private Uri getMediaImageUri() {
-    File file = new File( "/sdcard/com.sike.android" );
+    File file = new File( "/sdcard/com.sike.android/DCIM" );
     Uri uri;
     if (!file.exists()) {
       return null;

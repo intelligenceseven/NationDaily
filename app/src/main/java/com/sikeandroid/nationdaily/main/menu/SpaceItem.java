@@ -1,4 +1,4 @@
-package com.sikeandroid.nationdaily.menu;
+package com.sikeandroid.nationdaily.main.menu;
 
 import android.content.Context;
 import android.view.View;

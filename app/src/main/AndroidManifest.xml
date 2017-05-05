@@ -16,7 +16,7 @@
       android:supportsRtl="true"
       android:theme="@style/AppTheme">
     <activity
-        android:name=".DailyNationDetailActivity"
+        android:name=".main.DailyNationDetailActivity"
         android:screenOrientation="portrait">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
@@ -25,18 +25,18 @@
       </intent-filter>
     </activity>
     <activity
-        android:name=".NationHistoryActivity"
+        android:name=".main.NationHistoryActivity"
         android:screenOrientation="portrait" />
     <activity
         android:name=".cosplay.ARCosplay"
         android:label="AR换装"
-        android:parentActivityName=".DailyNationDetailActivity" />
+        android:parentActivityName=".main.DailyNationDetailActivity" />
     <activity android:name=".cosplay.ARCamera" />
     <activity android:name=".cosplay.ShowPhoto" />
     <activity
         android:name=".textscan.TextScan"
         android:label="文字识别"
-        android:parentActivityName=".DailyNationDetailActivity"></activity>
+        android:parentActivityName=".main.DailyNationDetailActivity"></activity>
   </application>
 
 </manifest>

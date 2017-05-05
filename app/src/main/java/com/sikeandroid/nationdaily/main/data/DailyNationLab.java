@@ -1,4 +1,4 @@
-package com.sikeandroid.nationdaily.data;
+package com.sikeandroid.nationdaily.main.data;
 
 import android.content.Context;
 import com.sikeandroid.nationdaily.R;

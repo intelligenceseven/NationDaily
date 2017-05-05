@@ -1,4 +1,4 @@
-package com.sikeandroid.nationdaily.menu;
+package com.sikeandroid.nationdaily.main.menu;
 
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;

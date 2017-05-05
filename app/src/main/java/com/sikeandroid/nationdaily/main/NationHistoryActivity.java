@@ -1,4 +1,4 @@
-package com.sikeandroid.nationdaily;
+package com.sikeandroid.nationdaily.main;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +7,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.github.zagum.expandicon.ExpandIconView;
+import com.sikeandroid.nationdaily.R;
 
 public class NationHistoryActivity extends AppCompatActivity implements GestureDetector.OnGestureListener {
 
@@ -20,7 +21,7 @@ public class NationHistoryActivity extends AppCompatActivity implements GestureD
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_nation_history);
+    setContentView( R.layout.activity_nation_history);
 
     expandIconView1 = (ExpandIconView) findViewById(R.id.expand_icon1);
     expandIconView2 = (ExpandIconView) findViewById(R.id.expand_icon2);

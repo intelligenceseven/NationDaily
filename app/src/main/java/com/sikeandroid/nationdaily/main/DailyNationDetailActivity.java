@@ -1,4 +1,4 @@
-package com.sikeandroid.nationdaily;
+package com.sikeandroid.nationdaily.main;
 
 import android.content.Intent;
 import android.content.res.TypedArray;
@@ -19,13 +19,14 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import com.sikeandroid.nationdaily.R;
 import com.sikeandroid.nationdaily.cosplay.ARCosplay;
-import com.sikeandroid.nationdaily.data.DailyNation;
-import com.sikeandroid.nationdaily.data.DailyNationLab;
-import com.sikeandroid.nationdaily.menu.DrawerAdapter;
-import com.sikeandroid.nationdaily.menu.DrawerItem;
-import com.sikeandroid.nationdaily.menu.SimpleItem;
-import com.sikeandroid.nationdaily.menu.SpaceItem;
+import com.sikeandroid.nationdaily.main.data.DailyNation;
+import com.sikeandroid.nationdaily.main.data.DailyNationLab;
+import com.sikeandroid.nationdaily.main.menu.DrawerAdapter;
+import com.sikeandroid.nationdaily.main.menu.DrawerItem;
+import com.sikeandroid.nationdaily.main.menu.SimpleItem;
+import com.sikeandroid.nationdaily.main.menu.SpaceItem;
 import com.sikeandroid.nationdaily.textscan.TextScan;
 import com.yarolegovich.slidingrootnav.SlidingRootNav;
 import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder;

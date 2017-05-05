@@ -1,4 +1,4 @@
-package com.sikeandroid.nationdaily.menu;
+package com.sikeandroid.nationdaily.main.menu;
 
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;

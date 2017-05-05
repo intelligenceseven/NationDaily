@@ -1,4 +1,4 @@
-package com.sikeandroid.nationdaily.fragment;
+package com.sikeandroid.nationdaily.main.fragment;
 
 import android.app.Fragment;
 import android.os.Bundle;
