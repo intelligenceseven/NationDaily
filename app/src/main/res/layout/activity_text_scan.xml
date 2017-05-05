@@ -24,7 +24,7 @@
         android:id="@+id/scan_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#4fff"
+        android:background="#00ffffff"
 
         />
   </android.support.design.widget.AppBarLayout>

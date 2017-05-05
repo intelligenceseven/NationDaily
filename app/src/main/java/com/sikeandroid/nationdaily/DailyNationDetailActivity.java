@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.Handler;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.Nullable;
@@ -16,6 +18,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+
 import com.sikeandroid.nationdaily.cosplay.ARCosplay;
 import com.sikeandroid.nationdaily.data.DailyNation;
 import com.sikeandroid.nationdaily.data.DailyNationLab;
@@ -23,13 +26,27 @@ import com.sikeandroid.nationdaily.menu.DrawerAdapter;
 import com.sikeandroid.nationdaily.menu.DrawerItem;
 import com.sikeandroid.nationdaily.menu.SimpleItem;
 import com.sikeandroid.nationdaily.menu.SpaceItem;
+import com.sikeandroid.nationdaily.textscan.TextScan;
 import com.yarolegovich.slidingrootnav.SlidingRootNav;
 import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.List;
 
 public class DailyNationDetailActivity extends AppCompatActivity
     implements DrawerAdapter.OnItemSelectedListener {
+
+  private int SPLASH_DISPLAY_LENGHT; // 延迟六秒
+  private int mFileExist;
+
+  public static final String mstrFilePathForDatSave = Environment.getExternalStorageDirectory().toString() + "/NationDaily/TianruiWorkroomOCR.dat";
+  public static final String mstrFilePathForDat = Environment.getExternalStorageDirectory().toString() + "/NationDaily";
+
 
   private static final int POS_HANZI = 0;
   private static final int POS_MINZU = 1;
@@ -60,7 +77,7 @@ public class DailyNationDetailActivity extends AppCompatActivity
         switch (item.getItemId()) {
           case R.id.scan_menu:
             Intent intent = new Intent( "android.media.action.IMAGE_CAPTURE" );
-            //intent = new Intent( DailyNationDetailActivity.this, TextScan.class );
+            intent = new Intent( DailyNationDetailActivity.this, TextScan.class );
             startActivity( intent );
 
             break;
@@ -114,6 +131,126 @@ public class DailyNationDetailActivity extends AppCompatActivity
     list.setAdapter( adapter );
 
     adapter.setSelected( POS_MINZU );
+
+    SPLASH_DISPLAY_LENGHT = 1000;
+    mFileExist = 0;
+    boolean bf1 = fileIsExists(mstrFilePathForDatSave);
+
+    if (bf1 == false)
+    {
+      mFileExist = 0;
+    }
+    else
+    {
+      mFileExist = 1;
+      SPLASH_DISPLAY_LENGHT = 150;
+    }
+
+    new Handler().postDelayed(new Runnable() {
+      public void run() {
+
+        if(mFileExist == 0)
+        {
+          try {
+            Thread trimmingThread = new Thread( new Runnable(){
+              public void run(){
+                CopyAssets("", mstrFilePathForDat);
+              }});
+            trimmingThread.setName("savingThread");
+            trimmingThread.start();
+
+            Thread.sleep(SPLASH_DISPLAY_LENGHT);
+
+          } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+          }
+
+        }
+
+      }
+
+    }, SPLASH_DISPLAY_LENGHT);
+  }
+
+
+
+
+  public boolean fileIsExists(String filePath){
+    long fLength = 0;
+    try{
+      File f = new File(filePath);
+
+      if(!f.exists())
+      {
+        return false;
+      }
+
+      fLength = f.length();
+    }catch (Exception e) {
+      // TODO: handle exception
+      return false;
+    }
+
+    if (fLength != 11140123)
+    {
+      return false;
+    }
+
+    return true;
+  }
+
+  private void CopyAssets(String assetDir, String dir) {
+    String[] files;
+    try {
+      files = this.getResources().getAssets().list(assetDir);
+    } catch (IOException e1) {
+      return;
+    }
+    File mWorkingPath = new File(dir);
+    // if this directory does not exists, make one.
+    if (!mWorkingPath.exists()) {
+      if (!mWorkingPath.mkdirs()) {
+
+      }
+    }
+    for (int i = 0; i < files.length; i++) {
+      try {
+        String fileName = files[i];
+        // we make sure file name not contains '.' to be a folder.
+        if (!fileName.contains(".")) {
+          if (0 == assetDir.length()) {
+            CopyAssets(fileName, dir + fileName + "/");
+          } else {
+            CopyAssets(assetDir + "/" + fileName, dir + fileName
+                    + "/");
+          }
+          continue;
+        }
+        File outFile = new File(mWorkingPath, fileName);
+        if (outFile.exists())
+          outFile.delete();
+        InputStream in = null;
+        if (0 != assetDir.length()) {
+          in = getAssets().open(assetDir + "/" + fileName);
+        } else {
+          in = getAssets().open(fileName);
+        }
+        OutputStream out = new FileOutputStream(outFile);
+
+        // Transfer bytes from in to out
+        byte[] buf = new byte[1024];
+        int len;
+        while ((len = in.read(buf)) > 0) {
+          out.write(buf, 0, len);
+        }
+        out.close();
+
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+
+    }
   }
 
   @Override public void onItemSelected(int position) {

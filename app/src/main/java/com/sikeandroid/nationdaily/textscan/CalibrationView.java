@@ -14,7 +14,7 @@ public class CalibrationView extends View {
     private Context mContext;
     int mWidth;
     int mHeight;
-    private int line_color = 0xFF9faba1;//线的颜色
+    private int line_color = 0xFFa6b245;//线的颜色
     private float width_longer = 2f;//长刻度宽度
     private float width_shorter = 2f;//短刻度宽度
     private float length_longer = 50;//长刻度长度
