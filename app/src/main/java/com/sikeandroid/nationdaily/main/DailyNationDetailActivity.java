@@ -1,5 +1,6 @@
 package com.sikeandroid.nationdaily.main;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
@@ -13,12 +14,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-
 import com.sikeandroid.nationdaily.R;
 import com.sikeandroid.nationdaily.cosplay.ARCosplay;
 import com.sikeandroid.nationdaily.main.data.DailyNation;
@@ -28,9 +27,9 @@ import com.sikeandroid.nationdaily.main.menu.DrawerItem;
 import com.sikeandroid.nationdaily.main.menu.SimpleItem;
 import com.sikeandroid.nationdaily.main.menu.SpaceItem;
 import com.sikeandroid.nationdaily.textscan.TextScan;
+import com.sikeandroid.nationdaily.util.BaseAppCompatActivity;
 import com.yarolegovich.slidingrootnav.SlidingRootNav;
 import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -39,15 +38,16 @@ import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.List;
 
-public class DailyNationDetailActivity extends AppCompatActivity
+public class DailyNationDetailActivity extends BaseAppCompatActivity
     implements DrawerAdapter.OnItemSelectedListener {
 
   private int SPLASH_DISPLAY_LENGHT; // 延迟六秒
   private int mFileExist;
 
-  public static final String mstrFilePathForDatSave = Environment.getExternalStorageDirectory().toString() + "/NationDaily/TianruiWorkroomOCR.dat";
-  public static final String mstrFilePathForDat = Environment.getExternalStorageDirectory().toString() + "/NationDaily";
-
+  public static final String mstrFilePathForDatSave =
+      Environment.getExternalStorageDirectory().toString() + "/NationDaily/TianruiWorkroomOCR.dat";
+  public static final String mstrFilePathForDat =
+      Environment.getExternalStorageDirectory().toString() + "/NationDaily";
 
   private static final int POS_HANZI = 0;
   private static final int POS_MINZU = 1;
@@ -77,9 +77,16 @@ public class DailyNationDetailActivity extends AppCompatActivity
       @Override public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
           case R.id.scan_menu:
-            Intent intent = new Intent( "android.media.action.IMAGE_CAPTURE" );
-            intent = new Intent( DailyNationDetailActivity.this, TextScan.class );
-            startActivity( intent );
+            performCodeWithPermission( "请求访问相机权限", new BaseAppCompatActivity.PermissionCallback() {
+              @Override public void hasPermission() {
+                //执行打开相机相关代码
+                Intent intent = new Intent( DailyNationDetailActivity.this, TextScan.class );
+                startActivity( intent );
+              }
+
+              @Override public void noPermission() {
+              }
+            }, Manifest.permission.CAMERA );
 
             break;
         }
@@ -135,66 +142,54 @@ public class DailyNationDetailActivity extends AppCompatActivity
 
     SPLASH_DISPLAY_LENGHT = 1000;
     mFileExist = 0;
-    boolean bf1 = fileIsExists(mstrFilePathForDatSave);
+    boolean bf1 = fileIsExists( mstrFilePathForDatSave );
 
-    if (bf1 == false)
-    {
+    if (bf1 == false) {
       mFileExist = 0;
-    }
-    else
-    {
+    } else {
       mFileExist = 1;
       SPLASH_DISPLAY_LENGHT = 150;
     }
 
-    new Handler().postDelayed(new Runnable() {
+    new Handler().postDelayed( new Runnable() {
       public void run() {
 
-        if(mFileExist == 0)
-        {
+        if (mFileExist == 0) {
           try {
-            Thread trimmingThread = new Thread( new Runnable(){
-              public void run(){
-                CopyAssets("", mstrFilePathForDat);
-              }});
-            trimmingThread.setName("savingThread");
+            Thread trimmingThread = new Thread( new Runnable() {
+              public void run() {
+                CopyAssets( "", mstrFilePathForDat );
+              }
+            } );
+            trimmingThread.setName( "savingThread" );
             trimmingThread.start();
 
-            Thread.sleep(SPLASH_DISPLAY_LENGHT);
-
+            Thread.sleep( SPLASH_DISPLAY_LENGHT );
           } catch (InterruptedException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
           }
-
         }
-
       }
-
-    }, SPLASH_DISPLAY_LENGHT);
+    }, SPLASH_DISPLAY_LENGHT );
   }
 
-
-
-
-  public boolean fileIsExists(String filePath){
+  public boolean fileIsExists(String filePath) {
     long fLength = 0;
-    try{
-      File f = new File(filePath);
+    try {
+      File f = new File( filePath );
 
-      if(!f.exists())
-      {
+      if (!f.exists()) {
         return false;
       }
 
       fLength = f.length();
-    }catch (Exception e) {
+    } catch (Exception e) {
       // TODO: handle exception
       return false;
     }
 
-    if (fLength != 11140123)
-    {
+    if (fLength != 11140123) {
       return false;
     }
 
@@ -204,11 +199,11 @@ public class DailyNationDetailActivity extends AppCompatActivity
   private void CopyAssets(String assetDir, String dir) {
     String[] files;
     try {
-      files = this.getResources().getAssets().list(assetDir);
+      files = this.getResources().getAssets().list( assetDir );
     } catch (IOException e1) {
       return;
     }
-    File mWorkingPath = new File(dir);
+    File mWorkingPath = new File( dir );
     // if this directory does not exists, make one.
     if (!mWorkingPath.exists()) {
       if (!mWorkingPath.mkdirs()) {
@@ -219,38 +214,34 @@ public class DailyNationDetailActivity extends AppCompatActivity
       try {
         String fileName = files[i];
         // we make sure file name not contains '.' to be a folder.
-        if (!fileName.contains(".")) {
+        if (!fileName.contains( "." )) {
           if (0 == assetDir.length()) {
-            CopyAssets(fileName, dir + fileName + "/");
+            CopyAssets( fileName, dir + fileName + "/" );
           } else {
-            CopyAssets(assetDir + "/" + fileName, dir + fileName
-                    + "/");
+            CopyAssets( assetDir + "/" + fileName, dir + fileName + "/" );
           }
           continue;
         }
-        File outFile = new File(mWorkingPath, fileName);
-        if (outFile.exists())
-          outFile.delete();
+        File outFile = new File( mWorkingPath, fileName );
+        if (outFile.exists()) outFile.delete();
         InputStream in = null;
         if (0 != assetDir.length()) {
-          in = getAssets().open(assetDir + "/" + fileName);
+          in = getAssets().open( assetDir + "/" + fileName );
         } else {
-          in = getAssets().open(fileName);
+          in = getAssets().open( fileName );
         }
-        OutputStream out = new FileOutputStream(outFile);
+        OutputStream out = new FileOutputStream( outFile );
 
         // Transfer bytes from in to out
         byte[] buf = new byte[1024];
         int len;
-        while ((len = in.read(buf)) > 0) {
-          out.write(buf, 0, len);
+        while ((len = in.read( buf )) > 0) {
+          out.write( buf, 0, len );
         }
         out.close();
-
       } catch (Exception e) {
         e.printStackTrace();
       }
-
     }
   }
 
@@ -260,13 +251,21 @@ public class DailyNationDetailActivity extends AppCompatActivity
       case POS_HANZI: // 汉字Acticity启动
 
         break;
-      case POS_MINZU: //
-
+      case POS_MINZU:
         mSlidingRootNav.closeMenu();
         break;
-      case POS_AR: // AR换衣Activity启动
-        Intent cosplay = new Intent( DailyNationDetailActivity.this, ARCosplay.class );
-        startActivity( cosplay );
+      case POS_AR:
+        // AR换衣Activity启动
+        performCodeWithPermission( "请求访问相机权限", new BaseAppCompatActivity.PermissionCallback() {
+              @Override public void hasPermission() {
+                Intent cosplay = new Intent( DailyNationDetailActivity.this, ARCosplay.class );
+                startActivity( cosplay );
+              }
+
+              @Override public void noPermission() {
+              }
+            }, Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE );
         break;
       case POS_ABOUT: // 关于界面启动
 

@@ -1,17 +1,11 @@
 package com.sikeandroid.nationdaily.cosplay;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.widget.Toast;
 import com.sikeandroid.nationdaily.R;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,8 +25,6 @@ public class ARCosplay extends AppCompatActivity {
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate( savedInstanceState );
     setContentView( R.layout.activity_ar_cosplay );
-
-
     Toolbar toolbar = (Toolbar) findViewById( R.id.toolbar );
     setSupportActionBar( toolbar );
     ActionBar actionBar = getSupportActionBar();
@@ -46,37 +38,11 @@ public class ARCosplay extends AppCompatActivity {
     recyclerView.setLayoutManager( layoutManager );
     adapter = new ClothAdapter( clothList );
     recyclerView.setAdapter( adapter );
-    checkRuntimePermission();
   }
 
   @Override public void onBackPressed() {
     super.onBackPressed();
     finish();
-
-  }
-
-  private void checkRuntimePermission() {
-    String[] permissions = {
-        Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE
-    };
-    for (String permission : permissions) {
-      if (ContextCompat.checkSelfPermission( ARCosplay.this, permission )
-          != PackageManager.PERMISSION_GRANTED) {
-        ActivityCompat.requestPermissions( ARCosplay.this, permissions, 1 );
-      }
-    }
-  }
-
-  @Override public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-      @NonNull int[] grantResults) {
-    switch (requestCode) {
-      case 1:
-        if (!(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-          Toast.makeText( this, "你没有允许" + "相机操作相关的访问权限", Toast.LENGTH_SHORT ).show();
-          finish();
-        }
-        break;
-    }
   }
 
   private void initCloths() {
