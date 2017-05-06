@@ -28,8 +28,8 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
   private SurfaceHolder mHolder;
   private Camera mCamera;
   public static final int FRONT_CAMERA = 1;
-  public static int cameraFlag = FRONT_CAMERA;
   public static final int BACK_CAMERA = 0;
+  public static int cameraFlag = BACK_CAMERA;
   private boolean safeToTakePicture = false;
 
   public CameraPreview(Context context) {
@@ -42,20 +42,41 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     if (mCamera == null) {
       //Log.d( TAG, "Camera number: " + Camera.getNumberOfCameras() );
       try {
+        ReleaseCamera();
         mCamera = Camera.open( cameraFlag );
       } catch (Exception e) {
         e.printStackTrace();
         Log.d( TAG, "camera is not available" );
-        if (cameraFlag == FRONT_CAMERA) {
-          cameraFlag = BACK_CAMERA;
-          mCamera = Camera.open( cameraFlag );
-        } else {
-          cameraFlag = FRONT_CAMERA;
-          mCamera = Camera.open( cameraFlag );
-        }
+        //  if (cameraFlag == FRONT_CAMERA) {
+        //    cameraFlag = BACK_CAMERA;
+        //    mCamera = Camera.open( cameraFlag );
+        //  } else {
+        //    cameraFlag = FRONT_CAMERA;
+        //    mCamera = Camera.open( cameraFlag );
+        //  }
       }
     }
     return mCamera;
+  }
+
+  public void changeCamera() {
+    mCamera.stopPreview();
+    mCamera.release();
+    mCamera = null;
+    getCameraInstance();
+    try {
+      mCamera.setPreviewDisplay( mHolder );
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    mCamera.startPreview();
+  }
+
+  private void ReleaseCamera() {
+    if (mCamera != null) {
+      mCamera.release();
+      mCamera = null;
+    }
   }
 
   @Override public void surfaceCreated(SurfaceHolder holder) {
@@ -70,6 +91,21 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
   }
 
   @Override public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+    Camera.Parameters parameters = mCamera.getParameters();
+    int rotation = getDisplayOrientation();
+    if (cameraFlag == FRONT_CAMERA) {
+      parameters.setRotation( rotation + 180 );
+    } else {
+      parameters.setRotation( rotation );
+    }
+    //设置相机旋转
+    mCamera.setDisplayOrientation( rotation );
+    //设置预览旋转
+    mCamera.setParameters( parameters );
+  }
+
+  public void changePreview() {
+
     Camera.Parameters parameters = mCamera.getParameters();
     int rotation = getDisplayOrientation();
     if (cameraFlag == FRONT_CAMERA) {

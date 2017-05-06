@@ -17,25 +17,31 @@
       android:theme="@style/AppTheme">
     <activity
         android:name=".main.DailyNationDetailActivity"
-        android:screenOrientation="portrait"></activity>
+        android:screenOrientation="portrait" />
     <activity
         android:name=".main.NationHistoryActivity"
         android:screenOrientation="portrait" />
     <activity
         android:name=".cosplay.ARCosplay"
         android:label="AR换装"
-        android:parentActivityName=".main.DailyNationDetailActivity" />
-    <activity android:name=".cosplay.ARCamera" />
-    <activity android:name=".cosplay.ShowPhoto" />
+        android:parentActivityName=".main.DailyNationDetailActivity"
+        android:screenOrientation="portrait" />
+    <activity
+        android:name=".cosplay.ARCamera"
+        android:screenOrientation="portrait" />
+    <activity
+        android:name=".cosplay.ShowPhoto"
+        android:screenOrientation="portrait" />
     <activity
         android:name=".textscan.TextScan"
         android:label="文字识别"
-        android:parentActivityName=".main.DailyNationDetailActivity"></activity>
-    <activity android:name=".guide.WelcomeActivity">
-
+        android:parentActivityName=".main.DailyNationDetailActivity"
+        android:screenOrientation="portrait" />
+    <activity
+        android:name=".guide.WelcomeActivity"
+        android:screenOrientation="portrait">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
-
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>

@@ -53,8 +53,8 @@ public class ARCamera extends AppCompatActivity {
     mainInterface = (FrameLayout) findViewById( R.id.main_interface );
 
     flash = (ImageButton) findViewById( R.id.flash );
-    if (CameraPreview.cameraFlag == CameraPreview.BACK_CAMERA) {
 
+    if (CameraPreview.cameraFlag == CameraPreview.BACK_CAMERA) {
       flash.setVisibility( View.VISIBLE );
       flash.setOnClickListener( new View.OnClickListener() {
         @Override public void onClick(View v) {
@@ -80,12 +80,7 @@ public class ARCamera extends AppCompatActivity {
 
     takePhoto.setOnClickListener( new View.OnClickListener() {
       @Override public void onClick(View v) {
-        //new Thread() {
-        //  @Override public void run() {
-        //    super.run();
         mPreview.takePicture( mediaPreview );
-        //}
-        //}.start();
       }
     } );
 
@@ -114,18 +109,45 @@ public class ARCamera extends AppCompatActivity {
     //翻转摄像机
     changeCamera.setOnClickListener( new View.OnClickListener() {
       @Override public void onClick(View v) {
-        Intent intent = new Intent( ARCamera.this, ARCamera.class );
-
-        intent.putExtra( Cloth.NATION_NAME, nationName );
-        intent.putExtra( Cloth.NATION_CLOTH_ID, nationClothesId );
-
+        //Intent intent = new Intent( ARCamera.this, ARCamera.class );
+        //
+        //intent.putExtra( Cloth.NATION_NAME, nationName );
+        //intent.putExtra( Cloth.NATION_CLOTH_ID, nationClothesId );
         if (CameraPreview.cameraFlag == CameraPreview.BACK_CAMERA) {
           CameraPreview.cameraFlag = CameraPreview.FRONT_CAMERA;
+          mPreview.changeCamera();
+          SettingsCamera.passCamera( mPreview.getCameraInstance() );
+          SettingsCamera.init();
+          mPreview.changePreview();
         } else {
           CameraPreview.cameraFlag = CameraPreview.BACK_CAMERA;
+          mPreview.changeCamera();
+          SettingsCamera.passCamera( mPreview.getCameraInstance() );
+          SettingsCamera.init();
+          mPreview.changePreview();
         }
-        startActivity( intent );
-        finish();
+        if (CameraPreview.cameraFlag == CameraPreview.BACK_CAMERA) {
+          flash.setVisibility( View.VISIBLE );
+          flash.setOnClickListener( new View.OnClickListener() {
+            @Override public void onClick(View v) {
+              Camera.Parameters parameters = mPreview.getCameraInstance().getParameters();
+              if (flashFlag == FLAG_CLOSE) {
+                parameters.setFlashMode( Camera.Parameters.FLASH_MODE_TORCH );
+                flashFlag = FLAG_OPEN;
+                flash.setBackgroundResource( R.drawable.flash_on );
+              } else {
+                parameters.setFlashMode( Camera.Parameters.FLASH_MODE_OFF );
+                flashFlag = FLAG_CLOSE;
+                flash.setBackgroundResource( R.drawable.flash_off );
+              }
+              mPreview.getCameraInstance().setParameters( parameters );
+            }
+          } );
+        } else {
+          flash.setVisibility( View.GONE );
+        }
+        //startActivity( intent );
+        //finish();
       }
     } );
 

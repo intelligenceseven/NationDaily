@@ -11,10 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.sikeandroid.nationdaily.R;
-import com.sikeandroid.nationdaily.util.CameraPreview;
 import java.util.List;
-
-
 
 public class ClothAdapter extends RecyclerView.Adapter<ClothAdapter.ViewHolder> {
   private Context mContext;
@@ -53,7 +50,6 @@ public class ClothAdapter extends RecyclerView.Adapter<ClothAdapter.ViewHolder> 
         Intent intent = new Intent( mContext, ARCamera.class );
         intent.putExtra( Cloth.NATION_NAME, cloth.getName() );
         intent.putExtra( Cloth.NATION_CLOTH_ID, cloth.getClothId() );
-        CameraPreview.cameraFlag = CameraPreview.FRONT_CAMERA;
         mContext.startActivity( intent );
         //intent.putExtra(  )
       }
