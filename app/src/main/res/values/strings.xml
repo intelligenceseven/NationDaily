@@ -5,6 +5,20 @@
   <string name="title">坚持传统</string>
   <string name="action_scan">Scan Chinese character</string>
 
+
+  <string name="title_activity_welcome">Home Screen</string>
+  <string name="next">下一步</string>
+  <string name="skip">跳过</string>
+  <string name="start">开始</string>
+
+  <string name="slide_1_title">Lonely</string>
+  <string name="slide_2_title">Meet</string>
+  <string name="slide_3_title">Fall in love at first sight</string>
+  <string name="slide_4_title">Both fall in love</string>
+  <string name="slide_5_title">Together forever</string>
+
+  <string name="play_again">play again</string>
+
   <string name="jj_1">【简介】阿昌族主要居住在云南省德宏傣族景颇族自治州的陇川和梁河县。</string>
   <string name="jj_2">【简介】白族主要聚居在云南省西部以洱海为中心的大理白族自治州。</string>
   <string name="jj_3">【简介】保安族主要聚居在甘肃省积石山保安族东乡族撒拉族自治县。</string>

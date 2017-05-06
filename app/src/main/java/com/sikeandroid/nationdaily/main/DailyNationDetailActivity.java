@@ -18,8 +18,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import com.sikeandroid.nationdaily.R;
 import com.sikeandroid.nationdaily.cosplay.ARCosplay;
+import com.sikeandroid.nationdaily.guide.PrefManager;
 import com.sikeandroid.nationdaily.main.data.DailyNation;
 import com.sikeandroid.nationdaily.main.data.DailyNationLab;
 import com.sikeandroid.nationdaily.main.menu.DrawerAdapter;
@@ -41,6 +44,7 @@ import java.util.List;
 public class DailyNationDetailActivity extends BaseAppCompatActivity
     implements DrawerAdapter.OnItemSelectedListener {
 
+  private Button guideAgain;
   private int SPLASH_DISPLAY_LENGHT; // 延迟六秒
   private int mFileExist;
 
@@ -172,6 +176,17 @@ public class DailyNationDetailActivity extends BaseAppCompatActivity
         }
       }
     }, SPLASH_DISPLAY_LENGHT );
+
+    //再次启动引导的界面
+
+    guideAgain = (Button) findViewById( R.id.guide_again );
+    guideAgain.setOnClickListener( new View.OnClickListener() {
+      @Override public void onClick(View v) {
+
+        new PrefManager( DailyNationDetailActivity.this ).setFirstTimeLaunch( true );
+        finish();
+      }
+    } );
   }
 
   public boolean fileIsExists(String filePath) {
