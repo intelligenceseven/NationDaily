@@ -157,8 +157,9 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
   }
 
   public void takePicture(final ImageView view) {
-    Camera.PictureCallback mPicture = new Camera.PictureCallback() {
+    Camera.PictureCallback picture = new Camera.PictureCallback() {
       @Override public void onPictureTaken(byte[] data, Camera camera) {
+
         File pictureFile = getOutputMediaFile();
         if (pictureFile == null) {
           Log.d( TAG, "Error creating media file,check storage permissions" );
@@ -190,8 +191,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
       }
     };
     if (safeToTakePicture) {
-
-      mCamera.takePicture( null, null, mPicture );
+      mCamera.takePicture( null, null, picture );
       safeToTakePicture = false;
     }
   }

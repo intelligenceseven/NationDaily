@@ -75,7 +75,7 @@ public class OCRScan extends SurfaceView implements SurfaceHolder.Callback {
   }
 
   public void scanText(final ImageView scanImage) {
-    mCamera.takePicture( null, null, new Camera.PictureCallback() {
+    Camera.PictureCallback scan = new Camera.PictureCallback() {
       @Override public void onPictureTaken(byte[] data, Camera camera) {
 
         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -93,6 +93,8 @@ public class OCRScan extends SurfaceView implements SurfaceHolder.Callback {
         canvas.drawRect( 0, 0, 700, 800, paint );
         canvas.drawBitmap( midBitmap, 302, 340, null );
         scanImage.setImageBitmap( destBitmap );
+        camera.startPreview();
+        safeToTakePicture = true;
 
         int picw = destBitmap.getWidth();
         int pich = destBitmap.getHeight();
@@ -109,10 +111,12 @@ public class OCRScan extends SurfaceView implements SurfaceHolder.Callback {
         } else {
           Log.e( TAG, "OcrThread: 无法识别" );
         }
-
-        camera.startPreview();
       }
-    } );
+    };
+    if (safeToTakePicture) {
+      mCamera.takePicture( null, null, scan );
+      safeToTakePicture = false;
+    }
   }
 
   public int getDisplayOrientation() {

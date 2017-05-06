@@ -19,7 +19,9 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import com.sikeandroid.nationdaily.R;
+import com.sikeandroid.nationdaily.about.AboutActivity;
 import com.sikeandroid.nationdaily.cosplay.ARCosplay;
+import com.sikeandroid.nationdaily.culture.CultureActivity;
 import com.sikeandroid.nationdaily.guide.PrefManager;
 import com.sikeandroid.nationdaily.main.data.DailyNation;
 import com.sikeandroid.nationdaily.main.data.DailyNationLab;
@@ -254,7 +256,7 @@ public class DailyNationDetailActivity extends BaseAppCompatActivity
     Intent intent;
     switch (position) {
       case POS_HANZI: // 汉字Acticity启动
-
+        startActivity( new Intent( this, CultureActivity.class ) );
         break;
       case POS_MINZU:
         mSlidingRootNav.closeMenu();
@@ -263,8 +265,7 @@ public class DailyNationDetailActivity extends BaseAppCompatActivity
         // AR换衣Activity启动
         performCodeWithPermission( "请求访问相机权限", new BaseAppCompatActivity.PermissionCallback() {
               @Override public void hasPermission() {
-                Intent cosplay = new Intent( DailyNationDetailActivity.this, ARCosplay.class );
-                startActivity( cosplay );
+                startActivity( new Intent( DailyNationDetailActivity.this, ARCosplay.class ) );
               }
 
               @Override public void noPermission() {
@@ -273,6 +274,7 @@ public class DailyNationDetailActivity extends BaseAppCompatActivity
             Manifest.permission.WRITE_EXTERNAL_STORAGE );
         break;
       case POS_ABOUT: // 关于界面启动
+        startActivity( new Intent( this, AboutActivity.class ) );
 
         break;
     }
