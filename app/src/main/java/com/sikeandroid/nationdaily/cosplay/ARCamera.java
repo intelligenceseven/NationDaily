@@ -49,8 +49,14 @@ public class ARCamera extends AppCompatActivity {
 
     takePhoto = (ImageButton) findViewById( R.id.take_photo );
     mediaPreview = (ImageView) findViewById( R.id.preview );
-    changeCamera = (ImageButton) findViewById( R.id.change_camera );
     mainInterface = (FrameLayout) findViewById( R.id.main_interface );
+
+    changeCamera = (ImageButton) findViewById( R.id.change_camera );
+    if (Camera.getNumberOfCameras() == 1) {
+      CameraPreview.cameraFlag = CameraPreview.BACK_CAMERA;
+      //兼容只有一个摄像头
+      changeCamera.setVisibility( View.GONE );
+    }
 
     flash = (ImageButton) findViewById( R.id.flash );
 

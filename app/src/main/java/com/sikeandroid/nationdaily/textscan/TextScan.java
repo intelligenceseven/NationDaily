@@ -53,7 +53,6 @@ public class TextScan extends AppCompatActivity {
     }
   };
 
-  private static String[] mwholeWord;
   public static final String mstrFilePathForDat =
       Environment.getExternalStorageDirectory().toString() + "/NationDaily";
   private static final String TAG = "TextScan";
@@ -62,8 +61,8 @@ public class TextScan extends AppCompatActivity {
     super.onCreate( savedInstanceState );
     setContentView( R.layout.activity_text_scan );
 
-    int rlt = Native.openOcrEngine( mstrFilePathForDat );
-    rlt = Native.setOcrLanguage( Native.TIANRUI_LANGUAGE_CHINESE_MIXED );
+    Native.openOcrEngine( mstrFilePathForDat );
+    int rlt = Native.setOcrLanguage( Native.TIANRUI_LANGUAGE_CHINESE_MIXED );
 
     if (rlt != 1) {
       Toast.makeText( this, "加载库失败！", Toast.LENGTH_SHORT ).show();
@@ -131,6 +130,7 @@ public class TextScan extends AppCompatActivity {
 
   @Override protected void onPause() {
     super.onPause();
+    timer.cancel();
     mPreview = null;
   }
 
@@ -139,6 +139,11 @@ public class TextScan extends AppCompatActivity {
     if (mPreview == null) {
       initCamera();
     }
+  }
+
+  @Override protected void onDestroy() {
+    timer.cancel();
+    super.onDestroy();
   }
 
   @Override public boolean onCreateOptionsMenu(Menu menu) {

@@ -47,13 +47,6 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
       } catch (Exception e) {
         e.printStackTrace();
         Log.d( TAG, "camera is not available" );
-        //  if (cameraFlag == FRONT_CAMERA) {
-        //    cameraFlag = BACK_CAMERA;
-        //    mCamera = Camera.open( cameraFlag );
-        //  } else {
-        //    cameraFlag = FRONT_CAMERA;
-        //    mCamera = Camera.open( cameraFlag );
-        //  }
       }
     }
     return mCamera;

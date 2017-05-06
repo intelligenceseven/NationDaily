@@ -21,7 +21,7 @@ import android.view.MenuItem;
 import com.sikeandroid.nationdaily.R;
 import com.sikeandroid.nationdaily.about.AboutActivity;
 import com.sikeandroid.nationdaily.cosplay.ARCosplay;
-import com.sikeandroid.nationdaily.culture.CultureActivity;
+import com.sikeandroid.nationdaily.culture.CharTopicActivity;
 import com.sikeandroid.nationdaily.guide.PrefManager;
 import com.sikeandroid.nationdaily.main.data.DailyNation;
 import com.sikeandroid.nationdaily.main.data.DailyNationLab;
@@ -79,6 +79,7 @@ public class DailyNationDetailActivity extends BaseAppCompatActivity
 
       @Override public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
+
           case R.id.scan_menu:
             performCodeWithPermission( "请求访问相机权限", new BaseAppCompatActivity.PermissionCallback() {
               @Override public void hasPermission() {
@@ -256,7 +257,9 @@ public class DailyNationDetailActivity extends BaseAppCompatActivity
     Intent intent;
     switch (position) {
       case POS_HANZI: // 汉字Acticity启动
-        startActivity( new Intent( this, CultureActivity.class ) );
+        Intent CharCulture = new Intent( DailyNationDetailActivity.this, CharTopicActivity.class );
+        startActivity( CharCulture );
+
         break;
       case POS_MINZU:
         mSlidingRootNav.closeMenu();

@@ -88,7 +88,8 @@ public class OCRScan extends SurfaceView implements SurfaceHolder.Callback {
         Bitmap destBitmap = Bitmap.createBitmap( 700, 800, Bitmap.Config.ARGB_8888 );
         Canvas canvas = new Canvas( destBitmap );
         Paint paint = new Paint();
-        paint.setColor( Color.BLACK );
+        //Color.argb( 255, 41, 115, 56 )
+        paint.setColor( Color.GREEN );
         paint.setStyle( Paint.Style.FILL );
         canvas.drawRect( 0, 0, 700, 800, paint );
         canvas.drawBitmap( midBitmap, 302, 340, null );
