@@ -122,13 +122,13 @@ public class ARCamera extends AppCompatActivity {
           TakePhoto.cameraFlag = TakePhoto.FRONT_CAMERA;
           mPreview.changeCamera();
           SettingsCamera.passCamera( mPreview.getCameraInstance() );
-          SettingsCamera.init();
+          SettingsCamera.initTakePhoto();
           mPreview.changePreview();
         } else {
           TakePhoto.cameraFlag = TakePhoto.BACK_CAMERA;
           mPreview.changeCamera();
           SettingsCamera.passCamera( mPreview.getCameraInstance() );
-          SettingsCamera.init();
+          SettingsCamera.initTakePhoto();
           mPreview.changePreview();
           flash.setBackgroundResource( R.drawable.flash_off );
         }
@@ -193,7 +193,7 @@ public class ARCamera extends AppCompatActivity {
     FrameLayout preview = (FrameLayout) findViewById( R.id.camera_preview );
     preview.addView( mPreview );
     SettingsCamera.passCamera( mPreview.getCameraInstance() );
-    SettingsCamera.init();
+    SettingsCamera.initTakePhoto();
   }
 
   private Uri getMediaImageUri() {

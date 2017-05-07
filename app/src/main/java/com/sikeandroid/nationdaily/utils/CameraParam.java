@@ -2,15 +2,11 @@ package com.sikeandroid.nationdaily.utils;
 
 import android.content.Context;
 import android.hardware.Camera;
-import android.util.Log;
 import android.view.Display;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.WindowManager;
-import java.io.IOException;
-
-import static com.sikeandroid.nationdaily.utils.TakePhoto.cameraFlag;
 
 public abstract class CameraParam extends SurfaceView implements SurfaceHolder.Callback {
 
@@ -26,38 +22,6 @@ public abstract class CameraParam extends SurfaceView implements SurfaceHolder.C
     super( context );
     mHolder = getHolder();
     mHolder.addCallback( this );
-  }
-
-  public Camera getCameraInstance() {
-    if (mCamera == null) {
-      //Log.d( TAG, "Camera number: " + Camera.getNumberOfCameras() );
-      try {
-        ReleaseCamera();
-        mCamera = Camera.open( cameraFlag );
-      } catch (Exception e) {
-        e.printStackTrace();
-        Log.d( TAG, "camera is not available" );
-      }
-    }
-    return mCamera;
-  }
-
-  private void ReleaseCamera() {
-    if (mCamera != null) {
-      mCamera.release();
-      mCamera = null;
-    }
-  }
-
-  @Override public void surfaceCreated(SurfaceHolder holder) {
-    getCameraInstance();
-    try {
-      mCamera.setPreviewDisplay( holder );
-      mCamera.startPreview();
-      safeToTakePicture = true;
-    } catch (IOException e) {
-      Log.d( TAG, "Error setting camera preview: " + e.getMessage() );
-    }
   }
 
   @Override public void surfaceDestroyed(SurfaceHolder holder) {

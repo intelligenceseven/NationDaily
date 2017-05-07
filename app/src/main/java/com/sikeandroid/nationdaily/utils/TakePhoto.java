@@ -29,6 +29,38 @@ public class TakePhoto extends CameraParam {
     super( context );
   }
 
+  public Camera getCameraInstance() {
+    if (mCamera == null) {
+      //Log.d( TAG, "Camera number: " + Camera.getNumberOfCameras() );
+      try {
+        ReleaseCamera();
+        mCamera = Camera.open( cameraFlag );
+      } catch (Exception e) {
+        e.printStackTrace();
+        Log.d( TAG, "camera is not available" );
+      }
+    }
+    return mCamera;
+  }
+
+  private void ReleaseCamera() {
+    if (mCamera != null) {
+      mCamera.release();
+      mCamera = null;
+    }
+  }
+
+  @Override public void surfaceCreated(SurfaceHolder holder) {
+    getCameraInstance();
+    try {
+      mCamera.setPreviewDisplay( holder );
+      mCamera.startPreview();
+      safeToTakePicture = true;
+    } catch (IOException e) {
+      Log.d( TAG, "Error setting camera preview: " + e.getMessage() );
+    }
+  }
+
   public void changeCamera() {
     mCamera.stopPreview();
     mCamera.release();

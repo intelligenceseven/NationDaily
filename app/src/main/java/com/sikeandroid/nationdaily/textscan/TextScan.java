@@ -1,10 +1,7 @@
 package com.sikeandroid.nationdaily.textscan;
 
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -13,15 +10,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.Toast;
 import com.sikeandroid.nationdaily.R;
 import com.sikeandroid.nationdaily.utils.OCRScan;
 import com.sikeandroid.nationdaily.utils.SettingsCamera;
 import com.sikeandroid.nationdaily.utils.TakePhoto;
 import com.tianruiworkroomocr.Native;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import static com.sikeandroid.nationdaily.utils.CameraParam.FLASH_CLOSE;
 import static com.sikeandroid.nationdaily.utils.CameraParam.flashFlag;
@@ -30,27 +24,9 @@ public class TextScan extends AppCompatActivity {
 
   private ScanView scanView;
   private OCRScan mPreview;
-  private ImageView scanImage;
   private Button scanText;
 
   private int mOpenSetLangFlg;
-  private Bitmap mBitmap;
-
-  private final Timer timer = new Timer();
-  private TimerTask task = new TimerTask() {
-    @Override public void run() {
-      Message message = new Message();
-      message.what = 1;
-      handler.sendMessage( message );
-    }
-  };
-
-  Handler handler = new Handler() {
-    @Override public void handleMessage(Message msg) {
-      mPreview.scanText( scanImage );
-      super.handleMessage( msg );
-    }
-  };
 
   public static final String mstrFilePathForDat =
       Environment.getExternalStorageDirectory().toString() + "/NationDaily";
@@ -81,12 +57,9 @@ public class TextScan extends AppCompatActivity {
     scanText = (Button) findViewById( R.id.scan_text );
     scanText.setOnClickListener( new View.OnClickListener() {
       @Override public void onClick(View v) {
-        //scanThread();
         scanView.startScanMatchingAnim();
       }
     } );
-    timer.schedule( task, 4000, 2000 );
-    scanImage = (ImageView) findViewById( R.id.scan_image );
   }
 
   private void initCamera() {
@@ -96,12 +69,11 @@ public class TextScan extends AppCompatActivity {
     FrameLayout preview = (FrameLayout) findViewById( R.id.scan_camera );
     preview.addView( mPreview );
     SettingsCamera.passCamera( mPreview.getCameraInstance() );
-    SettingsCamera.init();
+    SettingsCamera.initTakePhoto();
   }
 
   @Override protected void onPause() {
     super.onPause();
-    timer.cancel();
     mPreview = null;
   }
 
@@ -110,11 +82,6 @@ public class TextScan extends AppCompatActivity {
     if (mPreview == null) {
       initCamera();
     }
-  }
-
-  @Override protected void onDestroy() {
-    timer.cancel();
-    super.onDestroy();
   }
 
   @Override public boolean onCreateOptionsMenu(Menu menu) {
