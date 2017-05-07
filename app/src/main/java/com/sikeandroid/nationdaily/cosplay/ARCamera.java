@@ -16,6 +16,7 @@ import com.sikeandroid.nationdaily.utils.SettingsCamera;
 import com.sikeandroid.nationdaily.utils.TakePhoto;
 import java.io.File;
 
+import static com.sikeandroid.nationdaily.utils.CameraParam.FLASH_CLOSE;
 import static com.sikeandroid.nationdaily.utils.CameraParam.FLASh_OPEN;
 import static com.sikeandroid.nationdaily.utils.CameraParam.flashFlag;
 
@@ -67,18 +68,18 @@ public class ARCamera extends AppCompatActivity {
     takePhoto.setOnClickListener( new View.OnClickListener() {
       @Override public void onClick(View v) {
         mPreview.takePicture( mediaPreview );
-        if (TakePhoto.cameraFlag == TakePhoto.BACK_CAMERA) {
-
-          if (flashFlag == FLASh_OPEN) {
-            {
-            //mPreview.closeFlashLight();
-              //mPreview.openFlashLight();
-              flash.setBackgroundResource( R.drawable.flash_off );
-            }
-            //mPreview.flashLightUtils();
-            Log.d( "ARCamera", mPreview.isFlashLightOn() + "," + flashFlag );
-          }
-        }
+        //if (TakePhoto.cameraFlag == TakePhoto.BACK_CAMERA) {
+        //
+        //  if (flashFlag == FLASh_OPEN) {
+        //    {
+        //    //mPreview.closeFlashLight();
+        //      //mPreview.openFlashLight();
+        //      flash.setBackgroundResource( R.drawable.flash_off );
+        //    }
+        //    //mPreview.flashLightUtils();
+        //    Log.d( "ARCamera", mPreview.isFlashLightOn() + "," + flashFlag );
+        //  }
+        //}
       }
     } );
 
@@ -89,6 +90,12 @@ public class ARCamera extends AppCompatActivity {
     //全屏预览图片
     mediaPreview.setOnClickListener( new View.OnClickListener() {
       @Override public void onClick(View v) {
+        if (TakePhoto.cameraFlag == TakePhoto.BACK_CAMERA) {
+          if (flashFlag == FLASh_OPEN) {
+            flashFlag = FLASH_CLOSE;
+            flash.setBackgroundResource( R.drawable.flash_off );
+          }
+        }
         Intent intent = new Intent( ARCamera.this, ShowPhoto.class );
         if (mPreview.getOutputMediaFileType() == null) {
           if (getMediaImageUri() == null) {

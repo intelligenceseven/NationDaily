@@ -110,6 +110,13 @@ public class TakePhoto extends CameraParam {
           return;
         }
         try {
+          if (TakePhoto.cameraFlag == TakePhoto.BACK_CAMERA) {
+            if (flashFlag == FLASh_OPEN) {
+              Camera.Parameters parameters = mCamera.getParameters();
+              parameters.setFlashMode( Camera.Parameters.FLASH_MODE_ON );
+              mCamera.setParameters( parameters );
+            }
+          }
           BitmapFactory.Options options = new BitmapFactory.Options();
           options.inTargetDensity = options.inDensity;
           Bitmap srcBitmap = BitmapFactory.decodeByteArray( data, 0, data.length, options );
@@ -128,7 +135,9 @@ public class TakePhoto extends CameraParam {
           camera.startPreview();
           safeToTakePicture = true;
           if (cameraFlag == BACK_CAMERA) {
-            flashLightUtils();
+            if (flashFlag == FLASh_OPEN) {
+              openFlashLight();
+            }
           }
         } catch (FileNotFoundException e) {
           Log.d( TAG, "File not found:" + e.getMessage() );

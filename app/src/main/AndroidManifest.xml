@@ -45,9 +45,11 @@
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
-    <activity android:name=".culture.CharTopicActivity"
-        android:label="汉字文化"/>
-    <activity android:name=".culture.CharCulActivity"
+    <activity
+        android:name=".culture.CharTopicActivity"
+        android:label="汉字文化" />
+    <activity
+        android:name=".culture.CharCulActivity"
         android:label="汉字文化"></activity>
     <activity
         android:name=".about.AboutActivity"

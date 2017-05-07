@@ -1,7 +1,6 @@
 package com.sikeandroid.nationdaily.textscan;
 
 import android.graphics.Bitmap;
-import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -17,15 +16,14 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 import com.sikeandroid.nationdaily.R;
-import com.sikeandroid.nationdaily.utils.TakePhoto;
 import com.sikeandroid.nationdaily.utils.OCRScan;
 import com.sikeandroid.nationdaily.utils.SettingsCamera;
+import com.sikeandroid.nationdaily.utils.TakePhoto;
 import com.tianruiworkroomocr.Native;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import static com.sikeandroid.nationdaily.utils.CameraParam.FLASH_CLOSE;
-import static com.sikeandroid.nationdaily.utils.CameraParam.FLASh_OPEN;
 import static com.sikeandroid.nationdaily.utils.CameraParam.flashFlag;
 
 public class TextScan extends AppCompatActivity {
@@ -90,6 +88,7 @@ public class TextScan extends AppCompatActivity {
     timer.schedule( task, 4000, 2000 );
     scanImage = (ImageView) findViewById( R.id.scan_image );
   }
+
   private void initCamera() {
 
     TakePhoto.cameraFlag = TakePhoto.BACK_CAMERA;
@@ -126,17 +125,12 @@ public class TextScan extends AppCompatActivity {
   @Override public boolean onOptionsItemSelected(MenuItem item) {
     switch (item.getItemId()) {
       case R.id.flash_switch:
-        Camera.Parameters parameters = mPreview.getCameraInstance().getParameters();
+        mPreview.flashLightUtils();
         if (flashFlag == FLASH_CLOSE) {
-          parameters.setFlashMode( Camera.Parameters.FLASH_MODE_TORCH );
-          flashFlag = FLASh_OPEN;
-          item.setIcon( R.drawable.ic_flash_on_black_24dp );
-        } else {
-          parameters.setFlashMode( Camera.Parameters.FLASH_MODE_OFF );
-          flashFlag = FLASH_CLOSE;
           item.setIcon( R.drawable.ic_flash_off_black_24dp );
+        } else {
+          item.setIcon( R.drawable.ic_flash_on_black_24dp );
         }
-        mPreview.getCameraInstance().setParameters( parameters );
         break;
       case android.R.id.home:
         finish();
