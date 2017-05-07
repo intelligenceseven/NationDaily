@@ -30,7 +30,7 @@ import com.sikeandroid.nationdaily.main.menu.DrawerItem;
 import com.sikeandroid.nationdaily.main.menu.SimpleItem;
 import com.sikeandroid.nationdaily.main.menu.SpaceItem;
 import com.sikeandroid.nationdaily.textscan.TextScan;
-import com.sikeandroid.nationdaily.util.BaseAppCompatActivity;
+import com.sikeandroid.nationdaily.utils.BaseAppCompatActivity;
 import com.yarolegovich.slidingrootnav.SlidingRootNav;
 import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder;
 import java.io.File;

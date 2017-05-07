@@ -1,4 +1,4 @@
-package com.sikeandroid.nationdaily.util;
+package com.sikeandroid.nationdaily.utils;
 
 import android.hardware.Camera;
 
@@ -16,7 +16,7 @@ public class SettingsCamera {
     mParameters.setPictureSize( 1920, 1080 );
     mParameters.setJpegQuality( 100 );
     mParameters.setFocusMode( "continuous-picture" );
-    if (CameraPreview.cameraFlag == CameraPreview.BACK_CAMERA) {
+    if (TakePhoto.cameraFlag == TakePhoto.BACK_CAMERA) {
       mParameters.setFlashMode( "off" );
     }
     mCamera.stopPreview();

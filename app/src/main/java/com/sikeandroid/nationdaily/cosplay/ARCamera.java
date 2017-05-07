@@ -12,18 +12,18 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import com.sikeandroid.nationdaily.R;
-import com.sikeandroid.nationdaily.util.CameraPreview;
-import com.sikeandroid.nationdaily.util.SettingsCamera;
+import com.sikeandroid.nationdaily.utils.SettingsCamera;
+import com.sikeandroid.nationdaily.utils.TakePhoto;
 import java.io.File;
 
-import static com.sikeandroid.nationdaily.textscan.TextScan.FLAG_CLOSE;
-import static com.sikeandroid.nationdaily.textscan.TextScan.FLAG_OPEN;
+import static com.sikeandroid.nationdaily.utils.CameraParam.FLASh_OPEN;
+import static com.sikeandroid.nationdaily.utils.CameraParam.flashFlag;
 
 public class ARCamera extends AppCompatActivity {
 
   private ImageButton takePhoto;
   private ImageButton changeCamera;
-  private CameraPreview mPreview;
+  private TakePhoto mPreview;
   private ImageView mediaPreview;
 
   public static ImageView clothes;
@@ -37,7 +37,6 @@ public class ARCamera extends AppCompatActivity {
 
   //public DrawerLayout drawClothes;
   private ImageButton flash;
-  private int flashFlag = FLAG_CLOSE;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     //满屏显示
@@ -53,33 +52,14 @@ public class ARCamera extends AppCompatActivity {
 
     changeCamera = (ImageButton) findViewById( R.id.change_camera );
     if (Camera.getNumberOfCameras() == 1) {
-      CameraPreview.cameraFlag = CameraPreview.BACK_CAMERA;
+      TakePhoto.cameraFlag = TakePhoto.BACK_CAMERA;
       //兼容只有一个摄像头
       changeCamera.setVisibility( View.GONE );
     }
 
     flash = (ImageButton) findViewById( R.id.flash );
 
-    if (CameraPreview.cameraFlag == CameraPreview.BACK_CAMERA) {
-      flash.setVisibility( View.VISIBLE );
-      flash.setOnClickListener( new View.OnClickListener() {
-        @Override public void onClick(View v) {
-          Camera.Parameters parameters = mPreview.getCameraInstance().getParameters();
-          if (flashFlag == FLAG_CLOSE) {
-            parameters.setFlashMode( Camera.Parameters.FLASH_MODE_TORCH );
-            flashFlag = FLAG_OPEN;
-            flash.setBackgroundResource( R.drawable.flash_on );
-          } else {
-            parameters.setFlashMode( Camera.Parameters.FLASH_MODE_OFF );
-            flashFlag = FLAG_CLOSE;
-            flash.setBackgroundResource( R.drawable.flash_off );
-          }
-          mPreview.getCameraInstance().setParameters( parameters );
-        }
-      } );
-    } else {
-      flash.setVisibility( View.GONE );
-    }
+    flashState();
 
     //传入衣服
     passClothes();
@@ -87,6 +67,18 @@ public class ARCamera extends AppCompatActivity {
     takePhoto.setOnClickListener( new View.OnClickListener() {
       @Override public void onClick(View v) {
         mPreview.takePicture( mediaPreview );
+        if (TakePhoto.cameraFlag == TakePhoto.BACK_CAMERA) {
+
+          if (flashFlag == FLASh_OPEN) {
+            {
+            //mPreview.closeFlashLight();
+              //mPreview.openFlashLight();
+              flash.setBackgroundResource( R.drawable.flash_off );
+            }
+            //mPreview.flashLightUtils();
+            Log.d( "ARCamera", mPreview.isFlashLightOn() + "," + flashFlag );
+          }
+        }
       }
     } );
 
@@ -119,74 +111,46 @@ public class ARCamera extends AppCompatActivity {
         //
         //intent.putExtra( Cloth.NATION_NAME, nationName );
         //intent.putExtra( Cloth.NATION_CLOTH_ID, nationClothesId );
-        if (CameraPreview.cameraFlag == CameraPreview.BACK_CAMERA) {
-          CameraPreview.cameraFlag = CameraPreview.FRONT_CAMERA;
+        if (TakePhoto.cameraFlag == TakePhoto.BACK_CAMERA) {
+          TakePhoto.cameraFlag = TakePhoto.FRONT_CAMERA;
           mPreview.changeCamera();
           SettingsCamera.passCamera( mPreview.getCameraInstance() );
           SettingsCamera.init();
           mPreview.changePreview();
         } else {
-          CameraPreview.cameraFlag = CameraPreview.BACK_CAMERA;
+          TakePhoto.cameraFlag = TakePhoto.BACK_CAMERA;
           mPreview.changeCamera();
           SettingsCamera.passCamera( mPreview.getCameraInstance() );
           SettingsCamera.init();
           mPreview.changePreview();
+          flash.setBackgroundResource( R.drawable.flash_off );
         }
-        if (CameraPreview.cameraFlag == CameraPreview.BACK_CAMERA) {
-          flash.setVisibility( View.VISIBLE );
-          flash.setOnClickListener( new View.OnClickListener() {
-            @Override public void onClick(View v) {
-              Camera.Parameters parameters = mPreview.getCameraInstance().getParameters();
-              if (flashFlag == FLAG_CLOSE) {
-                parameters.setFlashMode( Camera.Parameters.FLASH_MODE_TORCH );
-                flashFlag = FLAG_OPEN;
-                flash.setBackgroundResource( R.drawable.flash_on );
-              } else {
-                parameters.setFlashMode( Camera.Parameters.FLASH_MODE_OFF );
-                flashFlag = FLAG_CLOSE;
-                flash.setBackgroundResource( R.drawable.flash_off );
-              }
-              mPreview.getCameraInstance().setParameters( parameters );
-            }
-          } );
-        } else {
-          flash.setVisibility( View.GONE );
-        }
-        //startActivity( intent );
-        //finish();
+        flashState();
       }
     } );
 
     //侧滑功能
     ClothesFragment clothesFragment = new ClothesFragment();
     getFragmentManager().beginTransaction().replace( R.id.pref_set, clothesFragment ).commit();
-    //drawClothes = (DrawerLayout) findViewById( R.id.draw_clothes );
-    //gestureDetector = new GestureDetector( this, new GestureDetector.SimpleOnGestureListener() {
-    //  @Override
-    //  public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-    //    //判断是否是右滑
-    //    float offsetX = e2.getX() - e1.getX();
-    //    float offsetY = e2.getY() - e1.getY();
-    //    if ((offsetX > 0 && offsetX > Math.abs( offsetY )) || (velocityX > 0
-    //        && velocityX > Math.abs( velocityY ))) {
-    //      return true;//返回true表示我们在dispatchTouchEvent中，就不把事件传递到子控件中了
-    //    }
-    //    return false;
-    //  }
-    //} );
   }
 
-  //private GestureDetector gestureDetector;
-
-  //@Override public boolean dispatchTouchEvent(MotionEvent event) {
-  //  //当向右滑动的时候，拦截事件，不传下去,通过GestureDetector辅助事件的判断
-  //  if (gestureDetector.onTouchEvent( event )) {
-  //    //打开侧边栏
-  //    drawClothes.openDrawer( GravityCompat.START );
-  //    return true;
-  //  }
-  //  return super.dispatchTouchEvent( event );
-  //}
+  private void flashState() {
+    if (TakePhoto.cameraFlag == TakePhoto.BACK_CAMERA) {
+      flash.setVisibility( View.VISIBLE );
+      flash.setOnClickListener( new View.OnClickListener() {
+        @Override public void onClick(View v) {
+          mPreview.flashLightUtils();
+          if (flashFlag == FLASh_OPEN) {
+            flash.setBackgroundResource( R.drawable.flash_on );
+          } else {
+            flash.setBackgroundResource( R.drawable.flash_off );
+          }
+        }
+      } );
+    } else {
+      flash.setVisibility( View.GONE );
+    }
+  }
 
   private void passClothes() {
     clothes = new ImageView( this );
@@ -218,7 +182,7 @@ public class ARCamera extends AppCompatActivity {
 
   private void initCamera() {
 
-    mPreview = new CameraPreview( this );
+    mPreview = new TakePhoto( this );
     FrameLayout preview = (FrameLayout) findViewById( R.id.camera_preview );
     preview.addView( mPreview );
     SettingsCamera.passCamera( mPreview.getCameraInstance() );

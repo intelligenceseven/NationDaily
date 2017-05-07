@@ -17,21 +17,22 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 import com.sikeandroid.nationdaily.R;
-import com.sikeandroid.nationdaily.util.CameraPreview;
-import com.sikeandroid.nationdaily.util.OCRScan;
-import com.sikeandroid.nationdaily.util.SettingsCamera;
+import com.sikeandroid.nationdaily.utils.TakePhoto;
+import com.sikeandroid.nationdaily.utils.OCRScan;
+import com.sikeandroid.nationdaily.utils.SettingsCamera;
 import com.tianruiworkroomocr.Native;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import static com.sikeandroid.nationdaily.utils.CameraParam.FLASH_CLOSE;
+import static com.sikeandroid.nationdaily.utils.CameraParam.FLASh_OPEN;
+import static com.sikeandroid.nationdaily.utils.CameraParam.flashFlag;
 
 public class TextScan extends AppCompatActivity {
 
   private ScanView scanView;
   private OCRScan mPreview;
   private ImageView scanImage;
-  public static final int FLAG_OPEN = 1;
-  public static final int FLAG_CLOSE = 0;
-  private int flashFlag = FLAG_CLOSE;
   private Button scanText;
 
   private int mOpenSetLangFlg;
@@ -89,38 +90,9 @@ public class TextScan extends AppCompatActivity {
     timer.schedule( task, 4000, 2000 );
     scanImage = (ImageView) findViewById( R.id.scan_image );
   }
-
-  private void OcrThread() {
-
-        /*mPreview.scanText();
-
-          try {
-              Thread.sleep( 1000 );
-          } catch (InterruptedException e) {
-              e.printStackTrace();
-          }
-        mBitmap = BitmapFactory.decodeFile(mImgFilePath);
-        int picw = mBitmap.getWidth();
-        int pich = mBitmap.getHeight();
-        int[] pix = new int[pich * picw];
-        mBitmap.getPixels(pix,0,picw,0,0,picw,pich);
-        int rlt = Native.recognizeImage(pix,picw,pich);
-
-        if(rlt == 1)
-        {
-            mwholeWord = Native.getWholeWordResult();
-            Log.e(TAG,mwholeWord[0]);
-        }
-        else
-        {
-            Log.e(TAG, "OcrThread: 无法识别");
-        }*/
-
-  }
-
   private void initCamera() {
 
-    CameraPreview.cameraFlag = CameraPreview.BACK_CAMERA;
+    TakePhoto.cameraFlag = TakePhoto.BACK_CAMERA;
     mPreview = new OCRScan( this );
     FrameLayout preview = (FrameLayout) findViewById( R.id.scan_camera );
     preview.addView( mPreview );
@@ -155,13 +127,13 @@ public class TextScan extends AppCompatActivity {
     switch (item.getItemId()) {
       case R.id.flash_switch:
         Camera.Parameters parameters = mPreview.getCameraInstance().getParameters();
-        if (flashFlag == FLAG_CLOSE) {
+        if (flashFlag == FLASH_CLOSE) {
           parameters.setFlashMode( Camera.Parameters.FLASH_MODE_TORCH );
-          flashFlag = FLAG_OPEN;
+          flashFlag = FLASh_OPEN;
           item.setIcon( R.drawable.ic_flash_on_black_24dp );
         } else {
           parameters.setFlashMode( Camera.Parameters.FLASH_MODE_OFF );
-          flashFlag = FLAG_CLOSE;
+          flashFlag = FLASH_CLOSE;
           item.setIcon( R.drawable.ic_flash_off_black_24dp );
         }
         mPreview.getCameraInstance().setParameters( parameters );

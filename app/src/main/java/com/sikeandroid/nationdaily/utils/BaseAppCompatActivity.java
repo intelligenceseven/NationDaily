@@ -1,4 +1,4 @@
-package com.sikeandroid.nationdaily.util;
+package com.sikeandroid.nationdaily.utils;
 
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
