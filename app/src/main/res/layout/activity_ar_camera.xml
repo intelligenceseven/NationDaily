@@ -69,11 +69,12 @@
           >
         <ImageView
             android:id="@+id/preview"
-            android:layout_width="50.625dp"
-            android:layout_height="90dp"
-            android:layout_margin="15dp"
+            android:layout_width="39.375dp"
+            android:layout_height="70dp"
             android:background="#fff"
+            android:layout_margin="15dp"
             android:scaleType="centerCrop"
+            android:src="@drawable/mz_2bai"
             />
         <ImageButton
             android:id="@+id/take_photo"

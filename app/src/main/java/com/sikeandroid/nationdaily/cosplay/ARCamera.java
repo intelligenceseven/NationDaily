@@ -6,6 +6,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Display;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
@@ -22,6 +24,7 @@ import static com.sikeandroid.nationdaily.utils.CameraParam.flashFlag;
 
 public class ARCamera extends AppCompatActivity {
 
+  private static final String TAG = "ARCamera";
   private ImageButton takePhoto;
   private ImageButton changeCamera;
   private TakePhoto mPreview;
@@ -29,12 +32,15 @@ public class ARCamera extends AppCompatActivity {
 
   public static ImageView clothes;
   public static FrameLayout mainInterface;
+  private static int lastX;
+  private static int lastY;
+  int screenWidth, screenHeight;
 
   //民族服装相关信息
   public static int nationClothesId;
   public static String nationName;
-  public static float clothesX;
-  public static float clothesY;
+  public static int clothesX;
+  public static int clothesY;
 
   //public DrawerLayout drawClothes;
   private ImageButton flash;
@@ -68,18 +74,6 @@ public class ARCamera extends AppCompatActivity {
     takePhoto.setOnClickListener( new View.OnClickListener() {
       @Override public void onClick(View v) {
         mPreview.takePicture( mediaPreview );
-        //if (TakePhoto.cameraFlag == TakePhoto.BACK_CAMERA) {
-        //
-        //  if (flashFlag == FLASh_OPEN) {
-        //    {
-        //    //mPreview.closeFlashLight();
-        //      //mPreview.openFlashLight();
-        //      flash.setBackgroundResource( R.drawable.flash_off );
-        //    }
-        //    //mPreview.flashLightUtils();
-        //    Log.d( "ARCamera", mPreview.isFlashLightOn() + "," + flashFlag );
-        //  }
-        //}
       }
     } );
 
@@ -137,8 +131,100 @@ public class ARCamera extends AppCompatActivity {
     } );
 
     //侧滑功能
-    ClothesFragment clothesFragment = new ClothesFragment();
+    final ClothesFragment clothesFragment = new ClothesFragment();
     getFragmentManager().beginTransaction().replace( R.id.pref_set, clothesFragment ).commit();
+
+    Display dis = this.getWindowManager().getDefaultDisplay();
+    screenWidth = dis.getWidth();
+    screenHeight = dis.getHeight();
+    clothes.setOnTouchListener( new View.OnTouchListener() {
+      @Override public boolean onTouch(View v, MotionEvent event) {
+
+        switch (event.getAction()) {
+          case MotionEvent.ACTION_DOWN:
+            lastX = (int) event.getRawX();
+            lastY = (int) event.getRawY();
+
+            break;
+
+          case MotionEvent.ACTION_MOVE:
+            int dx = (int) event.getRawX() - lastX;
+            int dy = (int) event.getRawY() - lastY;
+
+            int top = v.getTop() + dy;
+
+            int left = v.getLeft() + dx;
+
+            //if (top <= 0) {
+            //  top = 0;
+            //}
+            //if (top >= screenHeight - v.getHeight()) {
+            //  top = screenHeight - v.getHeight();
+            //}
+            //if (left >= screenWidth - v.getWidth()) {
+            //  left = screenWidth - v.getWidth();
+            //}
+            //
+            //if (left <= 0) {
+            //  left = 0;
+            //}
+
+            v.layout( left, top, left + v.getWidth(), top + v.getHeight() );
+            lastX = (int) event.getRawX();
+            lastY = (int) event.getRawY();
+            clothesX = (int) v.getX();
+            clothesY = (int) v.getY();
+
+            break;
+          case MotionEvent.ACTION_UP:
+
+            break;
+        }
+
+        return true;
+      }
+    } );
+    //设置衣服的触摸监听
+    //clothes.setOnTouchListener( new View.OnTouchListener() {
+    //  @Override public boolean onTouch(View v, MotionEvent event) {
+    //    switch (event.getAction()) {
+    //      case MotionEvent.ACTION_DOWN:
+    //        lastX = (int) event.getRawX();
+    //        lastY = (int) event.getRawX();
+    //        Log.d( TAG, "down,event:X=" + lastX + ",Y=" + lastY );
+    //        return true;
+    //      case MotionEvent.ACTION_MOVE:
+    //        //Log.d( TAG, "移动前:v.getX=" + v.getX() + ",v.getY=" + v.getY() );
+    //        //Log.d( TAG, "Event:getRawX=" + event.getRawX() + ",getRawY=" + event.getRawY() );
+    //        int dx = (int) event.getRawX() - lastX;
+    //        int dy = (int) event.getRawX() - lastY;
+    //
+    //        //Log.d( TAG, "dx=" + dx + ",dy=" + dy );
+    //
+    //        //int left = (int) (v.getX() + dx);
+    //        //int top = (int) (v.getY() + dy);
+    //        int left = v.getLeft() + dx;
+    //        int top = v.getTop() + dy;
+    //        int right = v.getRight() + dx;
+    //        int bottom = v.getBottom() + dy;
+    //        //Log.d( TAG, "top=" + top + ",left=" + left );
+    //
+    //        v.layout( left, top, right, bottom );
+    //        //Log.d( TAG,
+    //        //    "left:" + left + ",top:" + top + ",right:" + (left + v.getWidth()) + ",bottom:" + (
+    //        //        top
+    //        //            + v.getHeight()) );
+    //        //Log.d( TAG, "移动后:v.getX=" + v.getX() + ",v.getY=" + v.getY() );
+    //        lastX = (int) event.getRawX();
+    //        lastY = (int) event.getRawY();
+    //        break;
+    //      case MotionEvent.ACTION_UP:
+    //        Log.d( TAG, "motion up" );
+    //        break;
+    //    }
+    //    return true;
+    //  }
+    //} );
   }
 
   private void flashState() {
@@ -181,10 +267,23 @@ public class ARCamera extends AppCompatActivity {
       clothes.setX( 300 );
       clothes.setY( 100 );
     }
+    mainInterface.addView( clothes, 1, params );
+    Log.d( "ARCamera", clothes.getX() + "," + clothes.getY() );
+
+    lastX = clothesX = (int) clothes.getX();
+    lastY = clothesY = (int) clothes.getY();
+  }
+
+  public static void setClothesPosition() {
+    clothes.setImageResource( nationClothesId );
+    //定义布局
+    FrameLayout.LayoutParams params =
+        new FrameLayout.LayoutParams( FrameLayout.LayoutParams.WRAP_CONTENT,
+            FrameLayout.LayoutParams.WRAP_CONTENT );
+    clothes.setX( clothesX );
+    clothes.setY( clothesY );
     mainInterface.addView( clothes, params );
     Log.d( "ARCamera", clothes.getX() + "," + clothes.getY() );
-    clothesX = clothes.getX();
-    clothesY = clothes.getY();
   }
 
   private void initCamera() {
