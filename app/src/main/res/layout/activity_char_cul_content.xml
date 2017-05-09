@@ -1,21 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
+<FrameLayout
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:cardCornerRadius="0dp"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    xmlns:android="http://schemas.android.com/apk/res/android">
         <!--scaleType指定了图片的缩放模式，让他保持原比例填充满整个ImageView然后超出的部分裁掉-->
         <ImageView
-            android:layout_margin="30dp"
             android:id="@+id/char_image"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"/>
+            android:layout_height="wrap_content"
+            android:scaleType="fitCenter"/>
 
-    </FrameLayout>
-</android.support.v7.widget.CardView>
+</FrameLayout>
+

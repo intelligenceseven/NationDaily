@@ -9,7 +9,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.sikeandroid.nationdaily.R;
-import com.sikeandroid.nationdaily.cosplay.ClothAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,9 +19,15 @@ public class CharTopicActivity extends AppCompatActivity {
     private CharTopicAdapter adapter;
     private List<CharCulture> charCultureList=new ArrayList<>();
     private CharCulture[] charCultures={
-            new CharCulture(1,"聆听--藏在云朵中的故事",R.drawable.mz_31mang),
-            new CharCulture(2,"三月，送世界一份声音的礼物",R.drawable.mz_32maonan),
-            new CharCulture(3,"从你的全世界路过",R.drawable.diwen4)
+            new CharCulture(1,"聆听--藏在云朵中的故事",R.drawable.topic_1),
+            new CharCulture(2,"三月，送世界一份声音的礼物",R.drawable.topic_2),
+            new CharCulture(3,"从你的全世界路过",R.drawable.topic_3),
+            new CharCulture(4,"生活有度，人生添寿",R.drawable.topic_4),
+            new CharCulture(5,"人生贵知心，定交无暮早",R.drawable.topic_5),
+            new CharCulture(6,"两世容华,三生烟火,怎及她一醉倾城",R.drawable.topic_6),
+            new CharCulture(7,"埋下一座城、关了所有灯",R.drawable.topic_7),
+            new CharCulture(8,"泅渡一个世界、共一场生死",R.drawable.topic_8),
+            new CharCulture(9,"路过的风景、有没有人为你好好收藏",R.drawable.topic_9),
     };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,10 +71,10 @@ public class CharTopicActivity extends AppCompatActivity {
     }
     private void initCharTopics(){
         charCultureList.clear();
-        for(int i=0;i<10;i++){
-            Random random=new Random();
-            int index=random.nextInt(charCultures.length);
-            charCultureList.add(charCultures[index]);
+        for(CharCulture i: charCultures)
+        {
+            charCultureList.add(i);
         }
+
     }
 }

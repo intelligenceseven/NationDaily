@@ -49,16 +49,54 @@ public class CharCulActivity extends AppCompatActivity {
         if(topicId==1){
             View view1=View.inflate(this,R.layout.activity_char_cul_content,null);
             ImageView charImage1= (ImageView) view1.findViewById(R.id.char_image);
-            Glide.with(this).load(R.drawable.mz_1achang).into(charImage1);
+            Glide.with(this).load(R.drawable.jin).into(charImage1);
             View view2=View.inflate(this,R.layout.activity_char_cul_content,null);
             ImageView charImage2= (ImageView) view2.findViewById(R.id.char_image);
-            Glide.with(this).load(R.drawable.mz_2bai).into(charImage2);
+            Glide.with(this).load(R.drawable.mu).into(charImage2);
             View view3=View.inflate(this,R.layout.activity_char_cul_content,null);
             ImageView charImage3= (ImageView) view3.findViewById(R.id.char_image);
-            Glide.with(this).load(R.drawable.mz_3baoan).into(charImage3);
+            Glide.with(this).load(R.drawable.shui).into(charImage3);
+            View view4=View.inflate(this,R.layout.activity_char_cul_content,null);
+            ImageView charImage4= (ImageView) view4.findViewById(R.id.char_image);
+            Glide.with(this).load(R.drawable.huo).into(charImage4);
+            View view5=View.inflate(this,R.layout.activity_char_cul_content,null);
+            ImageView charImage5= (ImageView) view5.findViewById(R.id.char_image);
+            Glide.with(this).load(R.drawable.tu).into(charImage5);
             charViewList.add(view1);
             charViewList.add(view2);
             charViewList.add(view3);
+            charViewList.add(view4);
+            charViewList.add(view5);
+        }else if(topicId==2){
+            View view1=View.inflate(this,R.layout.activity_char_cul_content,null);
+            ImageView charImage1= (ImageView) view1.findViewById(R.id.char_image);
+            Glide.with(this).load(R.drawable.an).into(charImage1);
+            View view2=View.inflate(this,R.layout.activity_char_cul_content,null);
+            ImageView charImage2= (ImageView) view2.findViewById(R.id.char_image);
+            Glide.with(this).load(R.drawable.fa).into(charImage2);
+            View view3=View.inflate(this,R.layout.activity_char_cul_content,null);
+            ImageView charImage3= (ImageView) view3.findViewById(R.id.char_image);
+            Glide.with(this).load(R.drawable.hao).into(charImage3);
+            charViewList.add(view1);
+            charViewList.add(view2);
+            charViewList.add(view3);
+        }else if(topicId==3){
+            View view1=View.inflate(this,R.layout.activity_char_cul_content,null);
+            ImageView charImage1= (ImageView) view1.findViewById(R.id.char_image);
+            Glide.with(this).load(R.drawable.jia).into(charImage1);
+            View view2=View.inflate(this,R.layout.activity_char_cul_content,null);
+            ImageView charImage2= (ImageView) view2.findViewById(R.id.char_image);
+            Glide.with(this).load(R.drawable.ren).into(charImage2);
+            View view3=View.inflate(this,R.layout.activity_char_cul_content,null);
+            ImageView charImage3= (ImageView) view3.findViewById(R.id.char_image);
+            Glide.with(this).load(R.drawable.zai).into(charImage3);
+            View view4=View.inflate(this,R.layout.activity_char_cul_content,null);
+            ImageView charImage4= (ImageView) view4.findViewById(R.id.char_image);
+            Glide.with(this).load(R.drawable.zai).into(charImage4);
+            charViewList.add(view1);
+            charViewList.add(view2);
+            charViewList.add(view3);
+            charViewList.add(view4);
         }
         CharCulAdapter adapter=new CharCulAdapter(charViewList);
         charViewPager.setAdapter(adapter);
