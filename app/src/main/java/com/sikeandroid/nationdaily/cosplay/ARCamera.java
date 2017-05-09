@@ -22,7 +22,7 @@ import static com.sikeandroid.nationdaily.utils.CameraParam.FLASH_CLOSE;
 import static com.sikeandroid.nationdaily.utils.CameraParam.FLASh_OPEN;
 import static com.sikeandroid.nationdaily.utils.CameraParam.flashFlag;
 
-public class ARCamera extends AppCompatActivity {
+public class ARCamera extends AppCompatActivity implements View.OnClickListener {
 
   private static final String TAG = "ARCamera";
   private ImageButton takePhoto;
@@ -65,70 +65,22 @@ public class ARCamera extends AppCompatActivity {
     }
 
     flash = (ImageButton) findViewById( R.id.flash );
-
     flashState();
 
     //传入衣服
     passClothes();
 
-    takePhoto.setOnClickListener( new View.OnClickListener() {
-      @Override public void onClick(View v) {
-        mPreview.takePicture( mediaPreview );
-      }
-    } );
+    takePhoto.setOnClickListener( this );
 
     //默认预览是上次拍的最后一张图片
     if (getMediaImageUri() != null) {
       mediaPreview.setImageURI( getMediaImageUri() );
     }
     //全屏预览图片
-    mediaPreview.setOnClickListener( new View.OnClickListener() {
-      @Override public void onClick(View v) {
-        if (TakePhoto.cameraFlag == TakePhoto.BACK_CAMERA) {
-          if (flashFlag == FLASh_OPEN) {
-            flashFlag = FLASH_CLOSE;
-            flash.setBackgroundResource( R.drawable.flash_off );
-          }
-        }
-        Intent intent = new Intent( ARCamera.this, ShowPhoto.class );
-        if (mPreview.getOutputMediaFileType() == null) {
-          if (getMediaImageUri() == null) {
-            return;
-          }
-          intent.setDataAndType( getMediaImageUri(), "image/*" );
-          //return;
-        } else {
-          intent.setDataAndType( mPreview.getOutputMediaFileUri(),
-              mPreview.getOutputMediaFileType() );
-        }
-        startActivityForResult( intent, 0 );
-      }
-    } );
+    mediaPreview.setOnClickListener( this );
 
     //翻转摄像机
-    changeCamera.setOnClickListener( new View.OnClickListener() {
-      @Override public void onClick(View v) {
-        //Intent intent = new Intent( ARCamera.this, ARCamera.class );
-        //
-        //intent.putExtra( Cloth.NATION_NAME, nationName );
-        //intent.putExtra( Cloth.NATION_CLOTH_ID, nationClothesId );
-        if (TakePhoto.cameraFlag == TakePhoto.BACK_CAMERA) {
-          TakePhoto.cameraFlag = TakePhoto.FRONT_CAMERA;
-          mPreview.changeCamera();
-          SettingsCamera.passCamera( mPreview.getCameraInstance() );
-          SettingsCamera.initTakePhoto();
-          mPreview.changePreview();
-        } else {
-          TakePhoto.cameraFlag = TakePhoto.BACK_CAMERA;
-          mPreview.changeCamera();
-          SettingsCamera.passCamera( mPreview.getCameraInstance() );
-          SettingsCamera.initTakePhoto();
-          mPreview.changePreview();
-          flash.setBackgroundResource( R.drawable.flash_off );
-        }
-        flashState();
-      }
-    } );
+    changeCamera.setOnClickListener( this );
 
     //侧滑功能
     final ClothesFragment clothesFragment = new ClothesFragment();
@@ -184,47 +136,48 @@ public class ARCamera extends AppCompatActivity {
         return true;
       }
     } );
-    //设置衣服的触摸监听
-    //clothes.setOnTouchListener( new View.OnTouchListener() {
-    //  @Override public boolean onTouch(View v, MotionEvent event) {
-    //    switch (event.getAction()) {
-    //      case MotionEvent.ACTION_DOWN:
-    //        lastX = (int) event.getRawX();
-    //        lastY = (int) event.getRawX();
-    //        Log.d( TAG, "down,event:X=" + lastX + ",Y=" + lastY );
-    //        return true;
-    //      case MotionEvent.ACTION_MOVE:
-    //        //Log.d( TAG, "移动前:v.getX=" + v.getX() + ",v.getY=" + v.getY() );
-    //        //Log.d( TAG, "Event:getRawX=" + event.getRawX() + ",getRawY=" + event.getRawY() );
-    //        int dx = (int) event.getRawX() - lastX;
-    //        int dy = (int) event.getRawX() - lastY;
-    //
-    //        //Log.d( TAG, "dx=" + dx + ",dy=" + dy );
-    //
-    //        //int left = (int) (v.getX() + dx);
-    //        //int top = (int) (v.getY() + dy);
-    //        int left = v.getLeft() + dx;
-    //        int top = v.getTop() + dy;
-    //        int right = v.getRight() + dx;
-    //        int bottom = v.getBottom() + dy;
-    //        //Log.d( TAG, "top=" + top + ",left=" + left );
-    //
-    //        v.layout( left, top, right, bottom );
-    //        //Log.d( TAG,
-    //        //    "left:" + left + ",top:" + top + ",right:" + (left + v.getWidth()) + ",bottom:" + (
-    //        //        top
-    //        //            + v.getHeight()) );
-    //        //Log.d( TAG, "移动后:v.getX=" + v.getX() + ",v.getY=" + v.getY() );
-    //        lastX = (int) event.getRawX();
-    //        lastY = (int) event.getRawY();
-    //        break;
-    //      case MotionEvent.ACTION_UP:
-    //        Log.d( TAG, "motion up" );
-    //        break;
-    //    }
-    //    return true;
-    //  }
-    //} );
+  }
+
+  private void changeCamera() {
+    if (TakePhoto.cameraFlag == TakePhoto.BACK_CAMERA) {
+      if (TakePhoto.flashFlag == TakePhoto.FLASh_OPEN) {
+        TakePhoto.flashFlag = TakePhoto.FLASH_CLOSE;
+        mPreview.closeFlashLight();
+      }
+      TakePhoto.cameraFlag = TakePhoto.FRONT_CAMERA;
+      mPreview.changeCamera();
+      SettingsCamera.passCamera( mPreview.getCameraInstance() );
+      SettingsCamera.initTakePhoto();
+      mPreview.changePreview();
+    } else {
+      TakePhoto.cameraFlag = TakePhoto.BACK_CAMERA;
+      mPreview.changeCamera();
+      SettingsCamera.passCamera( mPreview.getCameraInstance() );
+      SettingsCamera.initTakePhoto();
+      mPreview.changePreview();
+      flash.setBackgroundResource( R.drawable.flash_off );
+    }
+    flashState();
+  }
+
+  private void mediaPreview() {
+    if (TakePhoto.cameraFlag == TakePhoto.BACK_CAMERA) {
+      if (flashFlag == FLASh_OPEN) {
+        flashFlag = FLASH_CLOSE;
+        flash.setBackgroundResource( R.drawable.flash_off );
+      }
+    }
+    Intent intent = new Intent( ARCamera.this, ShowPhoto.class );
+    if (mPreview.getOutputMediaFileType() == null) {
+      if (getMediaImageUri() == null) {
+        return;
+      }
+      intent.setDataAndType( getMediaImageUri(), "image/*" );
+      //return;
+    } else {
+      intent.setDataAndType( mPreview.getOutputMediaFileUri(), mPreview.getOutputMediaFileType() );
+    }
+    startActivityForResult( intent, 0 );
   }
 
   private void flashState() {
@@ -319,6 +272,26 @@ public class ARCamera extends AppCompatActivity {
     super.onResume();
     if (mPreview == null) {
       initCamera();
+      if (TakePhoto.cameraFlag == TakePhoto.BACK_CAMERA) {
+        if (TakePhoto.flashFlag == TakePhoto.FLASh_OPEN) {
+          mPreview.closeFlashLight();
+          TakePhoto.flashFlag = TakePhoto.FLASH_CLOSE;
+        }
+      }
+    }
+  }
+
+  @Override public void onClick(View v) {
+    switch (v.getId()) {
+      case R.id.take_photo:
+        mPreview.takePicture( mediaPreview );
+        break;
+      case R.id.preview:
+        mediaPreview();
+        break;
+      case R.id.change_camera:
+        changeCamera();
+        break;
     }
   }
 }

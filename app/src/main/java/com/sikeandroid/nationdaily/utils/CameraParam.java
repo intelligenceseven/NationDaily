@@ -77,13 +77,13 @@ public abstract class CameraParam extends SurfaceView implements SurfaceHolder.C
     }
   }
 
-  protected void openFlashLight() {
+  public void openFlashLight() {
     Camera.Parameters parameters = mCamera.getParameters();
     parameters.setFlashMode( Camera.Parameters.FLASH_MODE_TORCH );
     mCamera.setParameters( parameters );
   }
 
-  protected void closeFlashLight() {
+  public void closeFlashLight() {
     Camera.Parameters parameters = mCamera.getParameters();
     parameters.setFlashMode( Camera.Parameters.FLASH_MODE_OFF );
     mCamera.setParameters( parameters );
