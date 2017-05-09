@@ -213,30 +213,28 @@ public class ARCamera extends AppCompatActivity implements View.OnClickListener 
     FrameLayout.LayoutParams params =
         new FrameLayout.LayoutParams( FrameLayout.LayoutParams.WRAP_CONTENT,
             FrameLayout.LayoutParams.WRAP_CONTENT );
-    if (nationName.endsWith( "衣服" )) {
-      clothes.setX( 20 );
-      clothes.setY( 300 );
-    } else if (nationName.endsWith( "帽子" )) {
-      clothes.setX( 300 );
-      clothes.setY( 100 );
-    }
     mainInterface.addView( clothes, 1, params );
+    if (nationName.endsWith( "衣服" )) {
+      //clothes.layout( 20, 300, 20 + clothes.getWidth(), 300 + clothes.getWidth() );
+      clothesX = 20;
+      clothesY = 300;
+    } else if (nationName.endsWith( "帽子" )) {
+      //clothes.layout( 300, 100, 300 + clothes.getWidth(), 100 + clothes.getWidth() );
+      clothesX = 300;
+      clothesY = 100;
+    }
+    clothes.setX( clothesX );
+    clothes.setY( clothesY );
     Log.d( "ARCamera", clothes.getX() + "," + clothes.getY() );
 
-    lastX = clothesX = (int) clothes.getX();
-    lastY = clothesY = (int) clothes.getY();
+    clothesX = (int) clothes.getX();
+    clothesY = (int) clothes.getY();
   }
 
   public static void setClothesPosition() {
-    clothes.setImageResource( nationClothesId );
     //定义布局
-    FrameLayout.LayoutParams params =
-        new FrameLayout.LayoutParams( FrameLayout.LayoutParams.WRAP_CONTENT,
-            FrameLayout.LayoutParams.WRAP_CONTENT );
-    clothes.setX( clothesX );
-    clothes.setY( clothesY );
-    mainInterface.addView( clothes, params );
-    Log.d( "ARCamera", clothes.getX() + "," + clothes.getY() );
+    clothes.layout( clothesX, clothesY, clothesX + clothes.getWidth(), clothes.getHeight() );
+    Log.d( "ARCamera:", clothes.getX() + "," + clothes.getY() );
   }
 
   private void initCamera() {
@@ -284,6 +282,10 @@ public class ARCamera extends AppCompatActivity implements View.OnClickListener 
   @Override public void onClick(View v) {
     switch (v.getId()) {
       case R.id.take_photo:
+        Log.d( TAG, "clothes:X=" + clothes.getX() + ",Y=" + clothes.getY() );
+        Log.d( TAG, "clothesX=" + clothesX + ",clothesY=" + clothesY );
+        clothesX = (int) clothes.getX();
+        clothesY = (int) clothes.getY();
         mPreview.takePicture( mediaPreview );
         break;
       case R.id.preview:

@@ -176,6 +176,7 @@ public class TakePhoto extends CameraParam {
         } catch (IOException e) {
           Log.d( TAG, "Error accessing file:" + e.getMessage() );
         }
+
       }
     };
     if (safeToTakePicture) {
