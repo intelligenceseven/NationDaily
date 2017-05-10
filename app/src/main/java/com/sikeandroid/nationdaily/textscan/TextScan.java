@@ -35,6 +35,8 @@ public class TextScan extends AppCompatActivity {
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate( savedInstanceState );
     setContentView( R.layout.activity_text_scan );
+    scanView = (ScanView) findViewById( R.id.scanview );
+    scanView.startScanAnim();
 
     Native.openOcrEngine( mstrFilePathForDat );
     int rlt = Native.setOcrLanguage( Native.TIANRUI_LANGUAGE_CHINESE_MIXED );
@@ -52,8 +54,6 @@ public class TextScan extends AppCompatActivity {
       actionBar.setDisplayHomeAsUpEnabled( true );
     }
 
-    scanView = (ScanView) findViewById( R.id.scanview );
-    scanView.startScanAnim();
     scanText = (Button) findViewById( R.id.scan_text );
     scanText.setOnClickListener( new View.OnClickListener() {
       @Override public void onClick(View v) {

@@ -15,7 +15,6 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.util.Log;
 import android.view.SurfaceHolder;
-import android.widget.Toast;
 import com.tianruiworkroomocr.Native;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -119,7 +118,7 @@ public class OCRScan extends CameraParam implements Camera.PreviewCallback {
       String mwholeWord[] = Native.getWholeTextLineResult();
       if (mwholeWord != null) {
         Log.e( TAG, mwholeWord[0] );
-        Toast.makeText( getContext(), mwholeWord[0], Toast.LENGTH_SHORT ).show();
+        //Toast.makeText( getContext(), mwholeWord[0], Toast.LENGTH_SHORT ).show();
       }
     } else {
       Log.e( TAG, "OcrThread: 无法识别" );
