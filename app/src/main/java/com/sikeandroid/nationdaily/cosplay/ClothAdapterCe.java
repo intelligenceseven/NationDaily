@@ -12,7 +12,6 @@ import com.bumptech.glide.Glide;
 import com.sikeandroid.nationdaily.R;
 import java.util.List;
 
-
 public class ClothAdapterCe extends RecyclerView.Adapter<ClothAdapterCe.ViewHolder> {
   private Context mContext;
   private List<Cloth> mClothList;
@@ -45,6 +44,7 @@ public class ClothAdapterCe extends RecyclerView.Adapter<ClothAdapterCe.ViewHold
         //Log.d( "ClothAdapter",
         //    "position:" + holder.getAdapterPosition() + "," + mClothList.size() );
 
+        //ARCamera.matrix.reset();
         ARCamera.mainInterface.removeView( ARCamera.clothes );
         int position = holder.getAdapterPosition();
         Cloth cloth = mClothList.get( position );

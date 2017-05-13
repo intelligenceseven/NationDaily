@@ -71,8 +71,8 @@
             android:id="@+id/preview"
             android:layout_width="39.375dp"
             android:layout_height="70dp"
-            android:background="#fff"
             android:layout_margin="15dp"
+            android:background="#fff"
             android:scaleType="centerCrop"
             android:src="@drawable/mz_2bai"
             />

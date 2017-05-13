@@ -176,7 +176,6 @@ public class TakePhoto extends CameraParam {
         } catch (IOException e) {
           Log.d( TAG, "Error accessing file:" + e.getMessage() );
         }
-
       }
     };
     if (safeToTakePicture) {
@@ -212,15 +211,17 @@ public class TakePhoto extends CameraParam {
       Bitmap markBitmap =
           BitmapFactory.decodeResource( context.getResources(), markBitmapId, options );
       Log.d( TAG, "bitmap:width=" + bitmapWidth + ",height=" + bitmapHeight );
+
       int markBitmapWidth = markBitmap.getWidth();
       int markBitmapHeight = markBitmap.getHeight();
       Log.d( TAG, "markBitmap:width=" + markBitmapWidth + ",height=" + markBitmapHeight );
 
-      float bitmapX = ARCamera.clothesX;
-      float bitmapY = ARCamera.clothesY;
+      //float bitmapX = ARCamera.clothesX;
+      //float bitmapY = ARCamera.clothesY;
 
       // 画图
-      canvas.drawBitmap( markBitmap, bitmapX, bitmapY, null );
+      //canvas.drawBitmap( markBitmap, bitmapX, bitmapY, null );
+      canvas.drawBitmap( markBitmap, ARCamera.matrix, null );
     }
 
     //保存所有元素
