@@ -69,7 +69,7 @@ public class TextScan extends AppCompatActivity {
     FrameLayout preview = (FrameLayout) findViewById( R.id.scan_camera );
     preview.addView( mPreview );
     SettingsCamera.passCamera( mPreview.getCameraInstance() );
-    SettingsCamera.initTakePhoto();
+    SettingsCamera.initOCRScan();
   }
 
   @Override protected void onPause() {

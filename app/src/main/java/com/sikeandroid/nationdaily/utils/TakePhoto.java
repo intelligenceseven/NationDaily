@@ -4,13 +4,21 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.ImageFormat;
 import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.PointF;
+import android.graphics.Rect;
+import android.graphics.YuvImage;
 import android.hardware.Camera;
+import android.media.FaceDetector;
 import android.net.Uri;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.widget.ImageView;
 import com.sikeandroid.nationdaily.cosplay.ARCamera;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -18,7 +26,10 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class TakePhoto extends CameraParam {
+import static com.sikeandroid.nationdaily.cosplay.ARCamera.faceTrace;
+import static com.sikeandroid.nationdaily.cosplay.ARCamera.matrix;
+
+public class TakePhoto extends CameraParam implements Camera.PreviewCallback {
 
   private static final String TAG = "CameraPreview";
   public static final int FRONT_CAMERA = 1;
@@ -59,6 +70,7 @@ public class TakePhoto extends CameraParam {
     } catch (IOException e) {
       Log.d( TAG, "Error setting camera preview: " + e.getMessage() );
     }
+    //mCamera.setPreviewCallback( this );
   }
 
   public void changeCamera() {
@@ -194,7 +206,6 @@ public class TakePhoto extends CameraParam {
       bitmap =
           Bitmap.createBitmap( bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true );
     }
-
     // 获取图片的宽高
     int bitmapWidth = bitmap.getWidth();
     int bitmapHeight = bitmap.getHeight();
@@ -216,11 +227,29 @@ public class TakePhoto extends CameraParam {
       int markBitmapHeight = markBitmap.getHeight();
       Log.d( TAG, "markBitmap:width=" + markBitmapWidth + ",height=" + markBitmapHeight );
 
+      //float scaleRatio = SettingsCamera.getScaleRatio();
+      //Matrix screenScale = new Matrix();
+      //float[] matrixFloat = new float[9];
+      //matrix.getValues( matrixFloat );
+      //screenScale.setScale( scaleRatio, scaleRatio );
+      //markBitmap =
+      //    Bitmap.createBitmap( markBitmap, 0, 0, markBitmap.getWidth(), markBitmap.getHeight(),
+      //        screenScale, true );
+      //matrixFloat[0] *= scaleRatio;
+      //matrixFloat[2] *= scaleRatio;
+      //matrixFloat[4] *= scaleRatio;
+      //matrixFloat[5] *= scaleRatio;
+      //matrixFloat[6] *= scaleRatio;
+      //matrixFloat[7] *= scaleRatio;
+      //Matrix matrix = new Matrix();
+      //matrix.setValues( matrixFloat );
+
       //float bitmapX = ARCamera.clothesX;
       //float bitmapY = ARCamera.clothesY;
 
       // 画图
       //canvas.drawBitmap( markBitmap, bitmapX, bitmapY, null );
+      //ARCamera.matrix.postScale( SettingsCamera.getScaleRatio(), SettingsCamera.getScaleRatio() );
       canvas.drawBitmap( markBitmap, ARCamera.matrix, null );
     }
 
@@ -230,4 +259,149 @@ public class TakePhoto extends CameraParam {
 
     return bmp;
   }
+
+  private int imageWidth, imageHeight;
+  private int numberOfFace = 5;
+  private FaceDetector myFaceDetect;
+  private FaceDetector.Face[] myFace;
+  float myEyesDistance;
+  int numberOfFaceDetected;
+
+  @Override public void onPreviewFrame(byte[] data, Camera camera) {
+    BitmapFactory.Options options = new BitmapFactory.Options();
+    options.inTargetDensity = options.inDensity;
+    Bitmap srcBitmap = decodeToBitmap( data, camera );
+    Bitmap destBitmap;
+    //Log.d( TAG, "srcBitmap width:" + srcBitmap.getWidth() + "height:" + srcBitmap.getHeight() );
+    Matrix matrix = new Matrix();
+    matrix.setRotate( 90 );
+    srcBitmap =
+        Bitmap.createBitmap( srcBitmap, 0, 0, srcBitmap.getWidth(), srcBitmap.getHeight(), matrix,
+            true );
+    imageWidth = srcBitmap.getWidth();
+    imageHeight = srcBitmap.getHeight();
+    destBitmap = Bitmap.createBitmap( imageWidth, imageHeight, Bitmap.Config.RGB_565 );
+    myFace = new FaceDetector.Face[numberOfFace];
+    myFaceDetect = new FaceDetector( imageWidth, imageHeight, numberOfFace );
+
+    Canvas canvas = new Canvas( destBitmap );
+    canvas.drawBitmap( srcBitmap, 0.0F, 0.0F, new Paint() );
+    Paint myPaint = new Paint();
+    myPaint.setColor( Color.GREEN );
+    myPaint.setStyle( Paint.Style.STROKE );
+    myPaint.setStrokeWidth( 3 );          //设置位图上paint操作的参数
+    numberOfFaceDetected = myFaceDetect.findFaces( destBitmap, myFace );
+    Log.d( TAG, "numberOfFaceDetected" + numberOfFaceDetected );
+
+    for (int i = 0; i < numberOfFaceDetected; i++) {
+      FaceDetector.Face face = myFace[i];
+      PointF myMidPoint = new PointF();
+      face.getMidPoint( myMidPoint );
+      myEyesDistance = face.eyesDistance();   //得到人脸中心点和眼间距离参数，并对每个人脸进行画框
+      canvas.drawRect(            //矩形框的位置参数
+          (int) (myMidPoint.x - myEyesDistance), (int) (myMidPoint.y - myEyesDistance),
+          (int) (myMidPoint.x + myEyesDistance), (int) (myMidPoint.y + myEyesDistance), myPaint );
+      Log.d( TAG, "canvas draw" );
+    }
+    faceTrace.setImageBitmap( destBitmap );
+  }
+
+  public Bitmap decodeToBitmap(byte[] data, Camera camera) {
+    if (data == null || camera == null) {
+      return null;
+    }
+    Camera.Size size = camera.getParameters().getPreviewSize();
+    try {
+      YuvImage image = new YuvImage( data, ImageFormat.NV21, size.width, size.height, null );
+      if (image != null) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        image.compressToJpeg( new Rect( 0, 0, size.width, size.height ), 80, stream );
+
+        Bitmap bmp = BitmapFactory.decodeByteArray( stream.toByteArray(), 0, stream.size() );
+
+        stream.close();
+        return bmp;
+      }
+    } catch (Exception ex) {
+
+    }
+    return null;
+  }
+
+  /*
+  private long mScanBeginTime = 0;   // 扫描开始时间
+  private long mScanEndTime = 0;   // 扫描结束时间
+  private long mSpecPreviewTime = 0;   // 扫描持续时间
+  int numberOfFaceDetected;    //最终识别人脸数目
+
+  @Override public void onPreviewFrame(byte[] data, Camera camera) {
+    Log.d( TAG, "onPreviewFrame" );
+    //Camera.Size localSize = camera.getParameters().getPreviewSize();  //获得预览分辨率
+    YuvImage localYuvImage = new YuvImage( data, 17, 1080, 1920, null );
+    ByteArrayOutputStream localByteArrayOutputStream = new ByteArrayOutputStream();
+    localYuvImage.compressToJpeg( new Rect( 0, 0, 1080, 1920 ), 80,
+        localByteArrayOutputStream );    //把摄像头回调数据转成YUV，再按图像尺寸压缩成JPEG，从输出流中转成数组
+    byte[] arrayOfByte = localByteArrayOutputStream.toByteArray();
+    drawFace( arrayOfByte );
+  }
+
+  public void drawFace(byte[] paramArrayOfByte) {
+    Log.d( TAG, "paramArrayOfByte: " + paramArrayOfByte );
+    BitmapFactory.Options localOptions = new BitmapFactory.Options();
+    Bitmap localBitmap1 =
+        BitmapFactory.decodeByteArray( paramArrayOfByte, 0, paramArrayOfByte.length, localOptions );
+    int i = localBitmap1.getWidth();
+    int j = localBitmap1.getHeight();   //从上步解出的JPEG数组中接出BMP，即RAW->JPEG->BMP
+    Log.d( TAG, "drawFace: " + i + "," + j );
+    Matrix localMatrix = new Matrix();
+    //int k = cameraResOr;
+    Bitmap localBitmap2 = null;
+    FaceDetector localFaceDetector = null;
+
+    localFaceDetector = new FaceDetector( i, j, 1 );
+    localMatrix.postRotate( 90.0F, i / 2, j / 2 );
+    localBitmap2 = Bitmap.createBitmap( i, j, Bitmap.Config.RGB_565 );
+
+    FaceDetector.Face[] arrayOfFace = new FaceDetector.Face[5];
+    Paint localPaint1 = new Paint();
+    Paint localPaint2 = new Paint();
+    localPaint1.setDither( true );
+    localPaint2.setColor( Color.RED );
+    localPaint2.setStyle( Paint.Style.STROKE );
+    localPaint2.setStrokeWidth( 2.0F );
+    Canvas localCanvas = new Canvas();
+    localCanvas.setBitmap( localBitmap2 );
+    localCanvas.setMatrix( localMatrix );
+    localCanvas.drawBitmap( localBitmap1, 0.0F, 0.0F,
+        localPaint1 ); //该处将localBitmap1和localBitmap2关联（可不要？）
+
+    numberOfFaceDetected = localFaceDetector.findFaces( localBitmap2, arrayOfFace ); //返回识脸的结果
+    Paint myPaint = new Paint();
+    myPaint.setColor( Color.GREEN );
+    myPaint.setStyle( Paint.Style.STROKE );
+    myPaint.setStrokeWidth( 3 );          //设置位图上paint操作的参数
+    Log.d( TAG, "drawFace: " + localBitmap2.getWidth() + "," + localBitmap2.getHeight() );
+
+    for (int k = 0; k < numberOfFaceDetected; k++) {
+      //Canvas canvas = mHolder.lockCanvas();
+      FaceDetector.Face face = arrayOfFace[k];
+      PointF myMidPoint = new PointF();
+      face.getMidPoint( myMidPoint );
+      float myEyesDistance = face.eyesDistance();   //得到人脸中心点和眼间距离参数，并对每个人脸进行画框
+      localCanvas.drawRect(            //矩形框的位置参数
+          (int) (myMidPoint.x - myEyesDistance), (int) (myMidPoint.y - myEyesDistance),
+          (int) (myMidPoint.x + myEyesDistance), (int) (myMidPoint.y + myEyesDistance), myPaint );
+      //mHolder.unlockCanvasAndPost( canvas );
+      //mHolder.lockCanvas( new Rect( 0, 0, 0, 0 ) );
+      //mHolder.unlockCanvasAndPost( canvas );
+    }
+    faceTrace.setImageBitmap( localBitmap2 );
+
+    //faceTrace.setImageBitmap( localBitmap2 );
+    //localBitmap2.recycle();
+    //localBitmap1.recycle();   //释放位图资源
+
+    //FaceDetectDeal( numberOfFaceDetected );
+    Log.d( TAG, "numberOfFaceDetected" + numberOfFaceDetected );
+  }*/
 }

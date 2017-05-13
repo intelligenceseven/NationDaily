@@ -45,9 +45,11 @@ public class ARCamera extends AppCompatActivity
 
   //public DrawerLayout drawClothes;
   private ImageButton flash;
+  public static ImageView faceTrace;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     //满屏显示
+    //getWindowManager().getDefaultDisplay().getMetrics( dm );
     this.getWindow()
         .setFlags( WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN );
@@ -95,6 +97,7 @@ public class ARCamera extends AppCompatActivity
 
     m_list_coords = new ArrayList<>();
     matrix = new Matrix();
+    faceTrace = (ImageView) findViewById( R.id.face_track );
   }
 
   private void changeCamera() {
@@ -105,13 +108,13 @@ public class ARCamera extends AppCompatActivity
       }
       TakePhoto.cameraFlag = TakePhoto.FRONT_CAMERA;
       mPreview.changeCamera();
-      SettingsCamera.passCamera( mPreview.getCameraInstance() );
+      SettingsCamera.passCamera( mPreview.getCameraInstance());
       SettingsCamera.initTakePhoto();
       mPreview.changePreview();
     } else {
       TakePhoto.cameraFlag = TakePhoto.BACK_CAMERA;
       mPreview.changeCamera();
-      SettingsCamera.passCamera( mPreview.getCameraInstance() );
+      SettingsCamera.passCamera( mPreview.getCameraInstance());
       SettingsCamera.initTakePhoto();
       mPreview.changePreview();
       flash.setBackgroundResource( R.drawable.flash_off );
@@ -187,13 +190,12 @@ public class ARCamera extends AppCompatActivity
     //clothesY = (int) clothes.getY();
   }
 
-
   private void initCamera() {
 
     mPreview = new TakePhoto( this );
     FrameLayout preview = (FrameLayout) findViewById( R.id.camera_preview );
     preview.addView( mPreview );
-    SettingsCamera.passCamera( mPreview.getCameraInstance() );
+    SettingsCamera.passCamera( mPreview.getCameraInstance());
     SettingsCamera.initTakePhoto();
   }
 
