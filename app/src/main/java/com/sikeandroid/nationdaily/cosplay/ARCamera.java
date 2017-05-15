@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -37,7 +36,6 @@ public class ARCamera extends AppCompatActivity
 
   public static ImageView clothes;
   public static FrameLayout mainInterface;
-  int screenWidth, screenHeight;
 
   //民族服装相关信息
   public static int nationClothesId;
@@ -46,6 +44,7 @@ public class ARCamera extends AppCompatActivity
   //public DrawerLayout drawClothes;
   private ImageButton flash;
   public static ImageView faceTrace;
+  private FrameLayout previewLayout;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     //满屏显示
@@ -55,6 +54,7 @@ public class ARCamera extends AppCompatActivity
             WindowManager.LayoutParams.FLAG_FULLSCREEN );
     super.onCreate( savedInstanceState );
     setContentView( R.layout.activity_ar_camera );
+    previewLayout = (FrameLayout) findViewById( R.id.camera_preview );
 
     takePhoto = (ImageButton) findViewById( R.id.take_photo );
     mediaPreview = (ImageView) findViewById( R.id.preview );
@@ -89,10 +89,6 @@ public class ARCamera extends AppCompatActivity
     final ClothesFragment clothesFragment = new ClothesFragment();
     getFragmentManager().beginTransaction().replace( R.id.pref_set, clothesFragment ).commit();
 
-    Display dis = this.getWindowManager().getDefaultDisplay();
-    screenWidth = dis.getWidth();
-    screenHeight = dis.getHeight();
-
     clothes.setOnTouchListener( this );
 
     m_list_coords = new ArrayList<>();
@@ -108,13 +104,13 @@ public class ARCamera extends AppCompatActivity
       }
       TakePhoto.cameraFlag = TakePhoto.FRONT_CAMERA;
       mPreview.changeCamera();
-      SettingsCamera.passCamera( mPreview.getCameraInstance());
+      SettingsCamera.passCamera( mPreview.getCameraInstance() );
       SettingsCamera.initTakePhoto();
       mPreview.changePreview();
     } else {
       TakePhoto.cameraFlag = TakePhoto.BACK_CAMERA;
       mPreview.changeCamera();
-      SettingsCamera.passCamera( mPreview.getCameraInstance());
+      SettingsCamera.passCamera( mPreview.getCameraInstance() );
       SettingsCamera.initTakePhoto();
       mPreview.changePreview();
       flash.setBackgroundResource( R.drawable.flash_off );
@@ -193,9 +189,9 @@ public class ARCamera extends AppCompatActivity
   private void initCamera() {
 
     mPreview = new TakePhoto( this );
-    FrameLayout preview = (FrameLayout) findViewById( R.id.camera_preview );
-    preview.addView( mPreview );
-    SettingsCamera.passCamera( mPreview.getCameraInstance());
+
+    previewLayout.addView( mPreview );
+    SettingsCamera.passCamera( mPreview.getCameraInstance() );
     SettingsCamera.initTakePhoto();
   }
 
@@ -216,6 +212,8 @@ public class ARCamera extends AppCompatActivity
 
   @Override protected void onPause() {
     super.onPause();
+    mPreview.cameraRelease();
+    previewLayout.removeView( mPreview );
     mPreview = null;
   }
 

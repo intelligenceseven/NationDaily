@@ -32,6 +32,15 @@ public abstract class CameraParam extends SurfaceView implements SurfaceHolder.C
     mCamera = null;
   }
 
+  public void cameraRelease() {
+    mHolder.removeCallback( this );
+    mCamera.setPreviewCallback( null );
+    mCamera.stopPreview();
+    mCamera.release();
+    mCamera = null;
+  }
+
+
   public int getDisplayOrientation() {
     Display display = ((WindowManager) getContext().getSystemService(
         Context.WINDOW_SERVICE )).getDefaultDisplay();
