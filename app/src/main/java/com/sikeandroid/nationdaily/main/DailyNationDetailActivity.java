@@ -247,9 +247,11 @@ public class DailyNationDetailActivity extends BaseAppCompatActivity
           out.write( buf, 0, len );
         }
         out.close();
+
       } catch (Exception e) {
         e.printStackTrace();
       }
+
     }
   }
 
@@ -259,7 +261,7 @@ public class DailyNationDetailActivity extends BaseAppCompatActivity
       case POS_HANZI: // 汉字Acticity启动
         Intent CharCulture = new Intent( DailyNationDetailActivity.this, CharTopicActivity.class );
         startActivity( CharCulture );
-
+        mSlidingRootNav.closeMenu();
         break;
       case POS_MINZU:
         mSlidingRootNav.closeMenu();
@@ -275,10 +277,11 @@ public class DailyNationDetailActivity extends BaseAppCompatActivity
               }
             }, Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE );
+        mSlidingRootNav.closeMenu();
         break;
       case POS_ABOUT: // 关于界面启动
         startActivity( new Intent( this, AboutActivity.class ) );
-
+        mSlidingRootNav.closeMenu();
         break;
     }
     //mSlidingRootNav.closeMenu();

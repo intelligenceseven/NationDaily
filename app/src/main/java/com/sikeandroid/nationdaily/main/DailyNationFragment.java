@@ -22,6 +22,7 @@ public class DailyNationFragment extends Fragment {
     private ImageView mImageView;
     private TextView mNameTextView;
     private TextView mSuspectTextView;
+    private TextView mTimeTextView;
 
     private static final String ARG_DAILYNATION_DATE = "dailynation_date";
 
@@ -69,6 +70,10 @@ public class DailyNationFragment extends Fragment {
         mNameTextView.setText(mDailyNation.getName());
         mSuspectTextView = (TextView)v.findViewById(R.id.text_minzumiaoshu);
         mSuspectTextView.setText(getResources().getText(mDailyNation.getSuspect()));
+        mTimeTextView = (TextView)v.findViewById(R.id.text_time);
+        String time = mDailyNation.getDate();
+        time = time.replaceFirst("-","年\n");time = time.replaceFirst("-","月");time +="日";
+        mTimeTextView.setText(time);
         return v;
     }
 }
