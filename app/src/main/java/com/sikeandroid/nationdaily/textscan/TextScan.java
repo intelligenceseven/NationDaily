@@ -28,7 +28,7 @@ import static com.sikeandroid.nationdaily.utils.CameraParam.FLASH_CLOSE;
 
 public class TextScan extends AppCompatActivity {
 
-  private ScanView scanView;
+  private static ScanView scanView;
   private OCRScan mPreview;
   private Button scanText;
 
@@ -47,7 +47,7 @@ public class TextScan extends AppCompatActivity {
     float lastY = 0;
     float lastZ = 0;
 
-    private boolean moving = false;
+    private static boolean moving = true;
 
 
     float tMax=0.1f;
@@ -136,12 +136,11 @@ public class TextScan extends AppCompatActivity {
 
             if(speed >= SPEED_SHRESHOLD)
             {
-                //Toast.makeText(TextScan.this, "onshake", Toast.LENGTH_SHORT).show();
+                Toast.makeText(TextScan.this, "onshake", Toast.LENGTH_SHORT).show();
                 moving = true;
             }
             else
                 moving = false;
-
 
         }
     };
@@ -156,7 +155,7 @@ public class TextScan extends AppCompatActivity {
 
     }
 
-    public boolean isDeviceMoving()
+    public static boolean isDeviceMoving()
     {
         return moving;
     }
@@ -202,6 +201,21 @@ public class TextScan extends AppCompatActivity {
         scanView.startScanMatchingAnim();
       }
     } );
+  }
+
+  public static void startScanAnim()
+  {
+      scanView.startScanAnim();
+  }
+
+  public static void startScanMatchingAnim()
+  {
+      scanView.startScanMatchingAnim();
+  }
+
+  public static void startScanEndAnim()
+  {
+      scanView.startScanEndAnim();
   }
 
   private void initCamera() {

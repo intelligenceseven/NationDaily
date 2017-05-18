@@ -1,91 +1,30 @@
-<FrameLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/container"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".main.NationHistoryActivity">
+    android:layout_height="wrap_content">
 
-  <FrameLayout
-      android:layout_width="80dp"
-      android:layout_height="wrap_content">
-
-    <com.github.zagum.expandicon.ExpandIconView
-        android:id="@+id/expand_icon1"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="16dp"
-        app:eiv_animationDuration="300"
-        app:eiv_color="#000"
-        app:eiv_roundedCorners="false"
-        app:eiv_switchColor="false"/>
-
-    <com.github.zagum.expandicon.ExpandIconView
-        android:id="@+id/expand_icon2"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="56dp"
-        app:eiv_animationDuration="300"
-        app:eiv_color="#000"
-        app:eiv_colorLess="@color/colorPrimary"
-        app:eiv_colorMore="@color/colorAccent"
-        app:eiv_padding="8dp"
-        app:eiv_roundedCorners="false"
-        app:eiv_switchColor="true"/>
-
-  </FrameLayout>
-
-  <FrameLayout
-      android:layout_width="match_parent"
-      android:layout_height="150dp">
-
-    <View
-        android:id="@+id/swipe_detector"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_marginLeft="80dp"
-        android:background="#f7f1f1"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/swipe_finger_up_and_down"
-        android:textStyle="italic"/>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/nation_history_share_card">
 
-  </FrameLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </RelativeLayout>
 
 
-  <FrameLayout
-      android:id="@+id/click"
-      android:layout_width="match_parent"
-      android:layout_height="48dp"
-      android:layout_marginTop="200dp"
-      android:background="?selectableItemBackground">
-
-    <com.github.zagum.expandicon.ExpandIconView
-        android:id="@+id/expand_icon3"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_gravity="center_vertical"
-        android:layout_marginLeft="16dp"
-        app:eiv_animationDuration="300"
-        app:eiv_color="#000"
-        app:eiv_colorLess="@color/colorPrimary"
-        app:eiv_colorMore="@color/colorAccent"
-        app:eiv_roundedCorners="false"
-        app:eiv_switchColor="true"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/click"
-        android:textStyle="bold"/>
-
-  </FrameLayout>
-
-</FrameLayout>
+        <com.diegodobelo.expandingview.ExpandingList
+            android:id="@+id/expanding_list_main"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+</ScrollView>

@@ -15,13 +15,21 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.util.Log;
 import android.view.SurfaceHolder;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.sikeandroid.nationdaily.textscan.CharDialog;
 import com.tianruiworkroomocr.Native;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 public class OCRScan extends CameraParam implements Camera.PreviewCallback {
 
   private static final String TAG = "OCRScan";
+  private int aniFlag = 0;
+  private boolean checkFlag = false;
 
   public OCRScan(Context context) {
     super( context );
@@ -112,17 +120,65 @@ public class OCRScan extends CameraParam implements Camera.PreviewCallback {
     int pich = destBitmap.getHeight();
     int[] pix = new int[pich * picw];
     destBitmap.getPixels( pix, 0, picw, 0, 0, picw, pich );
-    int rlt = Native.recognizeImage( pix, picw, pich );
 
-    if (rlt == 1) {
-      String mwholeWord[] = Native.getWholeTextLineResult();
-      if (mwholeWord != null) {
-        Log.e( TAG, mwholeWord[0] );
-        //Toast.makeText( getContext(), mwholeWord[0], Toast.LENGTH_SHORT ).show();
+      try {
+          Thread.sleep(1000);
+      } catch (InterruptedException e) {
+          e.printStackTrace();
       }
-    } else {
-      Log.e( TAG, "OcrThread: 无法识别" );
+
+      if(true)
+    {
+      if(aniFlag != 0)
+      {
+        //TextScan.startScanMatchingAnim();
+        aniFlag = 0;
+      }
+      int rlt = Native.recognizeImage( pix, picw, pich );
+
+      if (rlt == 1 && !checkFlag) {
+        String mwholeWord[] = Native.getWholeTextLineResult();
+        if (mwholeWord != null && mwholeWord[0].length() == 1 && isChinese(mwholeWord[0].charAt(0))) {
+          Log.e( TAG, mwholeWord[0] );
+          Toast.makeText( getContext(), mwholeWord[0], Toast.LENGTH_SHORT ).show();
+          dialog(mwholeWord[0]);
+
+          //TextScan.startScanEndAnim();
+          checkFlag = true;
+        }
+      } else {
+        Log.e( TAG, "OcrThread: 无法识别" );
+      }
     }
+    else
+    {
+      if(aniFlag != 1)
+      {
+        //TextScan.startScanAnim();
+        aniFlag = 1;
+      }
+    }
+
+  }
+
+  public static boolean isChinese(char a) {
+    int v = (int)a;
+    return (v >=19968 && v <= 171941);
+  }
+
+  private void dialog(String s)
+  {
+    final CharDialog dialog = new CharDialog(getContext());
+    TextView textView = (TextView)dialog.getText();
+    textView.setText(s);
+    dialog.setClostListener(new OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        dialog.dismiss();
+        checkFlag = false;
+      }
+    });
+    dialog.show();
   }
 
   private class CameraHandlerThread extends HandlerThread {
