@@ -36,9 +36,3 @@ dependencies {
   compile 'com.diegodobelo.expandingview:expanding-view:0.9.1'
   testCompile 'junit:junit:4.12'
 }
-
-
-
-
-
-

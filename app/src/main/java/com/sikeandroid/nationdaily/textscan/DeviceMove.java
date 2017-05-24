@@ -32,7 +32,7 @@ public class DeviceMove extends Activity {
     float lastY = 0;
     float lastZ = 0;
 
-    private boolean moving = false;
+    private boolean moving = true;
 
     /** Called when the activity is first created. */
     @Override

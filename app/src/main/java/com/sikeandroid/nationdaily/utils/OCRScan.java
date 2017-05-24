@@ -1,6 +1,7 @@
 package com.sikeandroid.nationdaily.utils;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -28,11 +29,12 @@ import java.io.IOException;
 public class OCRScan extends CameraParam implements Camera.PreviewCallback {
 
   private static final String TAG = "OCRScan";
-  private int aniFlag = 0;
   private boolean checkFlag = false;
 
+  public boolean isOnShark = true;
+
   public OCRScan(Context context) {
-    super( context );
+    super(context);
   }
 
   @Override public void surfaceCreated(SurfaceHolder holder) {
@@ -43,6 +45,7 @@ public class OCRScan extends CameraParam implements Camera.PreviewCallback {
     } catch (IOException e) {
       Log.d( TAG, "Error setting camera preview: " + e.getMessage() );
     }
+
 
     mCamera.setPreviewCallback( this );
   }
@@ -121,19 +124,10 @@ public class OCRScan extends CameraParam implements Camera.PreviewCallback {
     int[] pix = new int[pich * picw];
     destBitmap.getPixels( pix, 0, picw, 0, 0, picw, pich );
 
-      try {
-          Thread.sleep(1000);
-      } catch (InterruptedException e) {
-          e.printStackTrace();
-      }
 
-      if(true)
+      if(!isOnShark)
     {
-      if(aniFlag != 0)
-      {
-        //TextScan.startScanMatchingAnim();
-        aniFlag = 0;
-      }
+
       int rlt = Native.recognizeImage( pix, picw, pich );
 
       if (rlt == 1 && !checkFlag) {
@@ -142,23 +136,14 @@ public class OCRScan extends CameraParam implements Camera.PreviewCallback {
           Log.e( TAG, mwholeWord[0] );
           Toast.makeText( getContext(), mwholeWord[0], Toast.LENGTH_SHORT ).show();
           dialog(mwholeWord[0]);
-
-          //TextScan.startScanEndAnim();
           checkFlag = true;
         }
-      } else {
+      }
+      else
+        {
         Log.e( TAG, "OcrThread: 无法识别" );
       }
     }
-    else
-    {
-      if(aniFlag != 1)
-      {
-        //TextScan.startScanAnim();
-        aniFlag = 1;
-      }
-    }
-
   }
 
   public static boolean isChinese(char a) {
@@ -179,6 +164,12 @@ public class OCRScan extends CameraParam implements Camera.PreviewCallback {
       }
     });
     dialog.show();
+    dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+      @Override
+      public void onDismiss(DialogInterface dialog) {
+        checkFlag = false;
+      }
+    });
   }
 
   private class CameraHandlerThread extends HandlerThread {

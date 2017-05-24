@@ -26,11 +26,13 @@ import com.tianruiworkroomocr.Native;
 
 import static com.sikeandroid.nationdaily.utils.CameraParam.FLASH_CLOSE;
 
-public class TextScan extends AppCompatActivity {
+public class TextScan extends AppCompatActivity implements Runnable {
 
   private static ScanView scanView;
   private OCRScan mPreview;
   private Button scanText;
+
+    private int aniFlag = 0;
 
     /******************************************************************/
     //摇晃速度临界值
@@ -136,11 +138,17 @@ public class TextScan extends AppCompatActivity {
 
             if(speed >= SPEED_SHRESHOLD)
             {
-                Toast.makeText(TextScan.this, "onshake", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(TextScan.this, "onshake", Toast.LENGTH_SHORT).show();
+
+                mPreview.isOnShark = true;
                 moving = true;
             }
             else
+            {
+
+                mPreview.isOnShark = false;
                 moving = false;
+            }
 
         }
     };
@@ -201,6 +209,13 @@ public class TextScan extends AppCompatActivity {
         scanView.startScanMatchingAnim();
       }
     } );
+
+      initGravitySensor();
+      //sensorLis.notify();
+
+      Thread thread = new Thread(this);
+      thread.start();
+
   }
 
   public static void startScanAnim()
@@ -224,16 +239,18 @@ public class TextScan extends AppCompatActivity {
     mPreview = new OCRScan( this );
     FrameLayout preview = (FrameLayout) findViewById( R.id.scan_camera );
     preview.addView( mPreview );
-    SettingsCamera.passCamera( mPreview.getCameraInstance() );
+    SettingsCamera.passCamera(mPreview.getCameraInstance());
     SettingsCamera.initOCRScan();
   }
 
   @Override protected void onPause() {
+      sensorMag.unregisterListener(sensorLis);
     super.onPause();
     mPreview = null;
   }
 
   @Override protected void onResume() {
+      sensorMag.registerListener(sensorLis, gravitySensor, SensorManager.SENSOR_DELAY_UI);
     super.onResume();
     if (mPreview == null) {
       initCamera();
@@ -261,4 +278,35 @@ public class TextScan extends AppCompatActivity {
     }
     return true;
   }
+
+    @Override
+    public void run() {
+
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        if(isDeviceMoving())
+        {
+            if(aniFlag != 0)
+            {
+                startScanAnim();
+                aniFlag = 0;
+            }
+        }
+        else
+        {
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            if(aniFlag != 1)
+            {
+                startScanMatchingAnim();
+                aniFlag = 1;
+            }
+        }
+    }
 }
