@@ -19,45 +19,40 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_marginLeft="3dp"
-            android:layout_marginRight="3dp"
-            android:layout_marginTop="3dp"
-            android:layout_marginBottom="3dp"
             android:background="@drawable/bg_border_char">
                 <ImageView
                     android:id="@+id/char_image"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="10"
+                    android:layout_height="match_parent"
 
-                    android:scaleType="centerCrop"
+                    android:scaleType="fitXY"
                     android:src="@drawable/yi">
                 </ImageView>
 
-                <ImageView
-                    android:layout_weight="1"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/diwen1"/>
+                <!--<ImageView-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="0dp"-->
+                    <!--android:scaleType="centerCrop"-->
+                    <!--android:src="@drawable/diwen1"/>-->
 
         </LinearLayout>
 
 
 
-        <TextView
-            android:id="@+id/text_hanzijianjie"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:fontFamily="casual"
-            android:gravity="center"
-            android:layout_marginBottom="18dp"
-            android:text="【说文·水部】“冰，水坚也。从水，凝，俗冰从疑。"
-            android:textColor="#544b32"
-            android:textSize="14sp"/>
+        <!--<TextView-->
+            <!--android:id="@+id/text_hanzijianjie"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="bottom|center"-->
+            <!--android:layout_marginLeft="10dp"-->
+            <!--android:layout_marginRight="10dp"-->
+            <!--android:fontFamily="casual"-->
+            <!--android:gravity="center"-->
+            <!--android:layout_marginBottom="18dp"-->
+            <!--android:text="【说文·水部】“冰，水坚也。从水，凝，俗冰从疑。"-->
+            <!--android:textColor="#544b32"-->
+            <!--android:textSize="14sp"/>-->
 
 
 

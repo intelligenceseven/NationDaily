@@ -9,9 +9,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
-import com.bumptech.glide.Glide;
+
+import com.gjiazhe.panoramaimageview.GyroscopeObserver;
+import com.gjiazhe.panoramaimageview.PanoramaImageView;
 import com.sikeandroid.nationdaily.R;
 import com.sikeandroid.nationdaily.main.data.DailyNation;
 import com.sikeandroid.nationdaily.main.data.DailyNationLab;
@@ -19,10 +20,11 @@ public class DailyNationFragment extends Fragment {
 
     private DailyNation mDailyNation;
     private int mImage;
-    private ImageView mImageView;
+    private PanoramaImageView mImageView;
     private TextView mNameTextView;
     private TextView mSuspectTextView;
     private TextView mTimeTextView;
+    private GyroscopeObserver gyroscopeObserver;
 
     private static final String ARG_DAILYNATION_DATE = "dailynation_date";
 
@@ -47,6 +49,8 @@ public class DailyNationFragment extends Fragment {
         }
         mDailyNation = DailyNationLab.get(getActivity()).getDailyNation(date);
         mImage = mDailyNation.getImage();
+
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -56,8 +60,19 @@ public class DailyNationFragment extends Fragment {
 
         View v = inflater.inflate( R.layout.fragment_daily_nation,container,false);
 
-        mImageView = (ImageView)v.findViewById(R.id.image_minzu);
-        Glide.with( this ).load( mImage ).into( mImageView );
+        gyroscopeObserver = new GyroscopeObserver();
+        // Set the maximum radian the device should rotate to show image's bounds.
+        // It should be set between 0 and π/2.
+        // The default value is π/9.
+        gyroscopeObserver.setMaxRotateRadian(Math.PI/9);
+
+        mImageView = (PanoramaImageView)v.findViewById(R.id.image_minzu);
+        // Set GyroscopeObserver for PanoramaImageView.
+        mImageView.setGyroscopeObserver(gyroscopeObserver);
+
+        //mImageView = (ImageView)v.findViewById(R.id.image_minzu);
+        //Glide.with( this ).load( mImage ).into( mImageView );
+        mImageView.setImageDrawable(getResources().getDrawable(mImage));
         mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,4 +91,17 @@ public class DailyNationFragment extends Fragment {
         mTimeTextView.setText(time);
         return v;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        gyroscopeObserver.register(getContext());
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        gyroscopeObserver.unregister();
+    }
+
 }

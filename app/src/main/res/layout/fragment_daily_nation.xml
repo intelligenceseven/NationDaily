@@ -32,15 +32,18 @@
             android:layout_marginTop="3dp"
             android:layout_marginBottom="3dp"
             android:background="@drawable/bg_border">
-            <ImageView
+
+            <com.gjiazhe.panoramaimageview.PanoramaImageView
                 android:id="@+id/image_minzu"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="3"
-
-                android:scaleType="centerCrop"
+                app:piv_enablePanoramaMode="true"
+                app:piv_show_scrollbar="true"
+                app:piv_invertScrollDirection="true"
+                android:scaleType="fitStart"
                 android:src="@drawable/mz_6zang">
-            </ImageView>
+            </com.gjiazhe.panoramaimageview.PanoramaImageView>
 
             <ImageView
                 android:layout_weight="1"

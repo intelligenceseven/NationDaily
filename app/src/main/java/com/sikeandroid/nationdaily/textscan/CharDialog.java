@@ -43,4 +43,5 @@ public class CharDialog extends Dialog{
     {
         //closeButton.setOnClickListener(listener);
     }
+
 }

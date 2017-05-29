@@ -2,6 +2,7 @@ package com.sikeandroid.nationdaily.utils;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -20,6 +21,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.sikeandroid.nationdaily.culture.SingleCharActivity;
 import com.sikeandroid.nationdaily.textscan.CharDialog;
 import com.tianruiworkroomocr.Native;
 
@@ -50,10 +52,13 @@ public class OCRScan extends CameraParam implements Camera.PreviewCallback {
     mCamera.setPreviewCallback( this );
   }
 
-  public Camera getCameraInstance() {
-    if (mCamera == null) {
+  public Camera getCameraInstance()
+  {
+    if (mCamera == null)
+    {
       CameraHandlerThread mThread = new CameraHandlerThread( "camera thread" );
-      synchronized (mThread) {
+      synchronized (mThread)
+      {
         mThread.openCamera();
       }
     }
@@ -146,66 +151,96 @@ public class OCRScan extends CameraParam implements Camera.PreviewCallback {
     }
   }
 
-  public static boolean isChinese(char a) {
+  public static boolean isChinese(char a)
+  {
     int v = (int)a;
     return (v >=19968 && v <= 171941);
   }
 
-  private void dialog(String s)
+  private void dialog(final String s)
   {
     final CharDialog dialog = new CharDialog(getContext());
     TextView textView = (TextView)dialog.getText();
     textView.setText(s);
-    dialog.setClostListener(new OnClickListener() {
+    dialog.setClostListener(new OnClickListener()
+    {
       @Override
-      public void onClick(View v) {
+      public void onClick(View v)
+      {
         dialog.dismiss();
         checkFlag = false;
       }
     });
-    dialog.show();
-    dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+
+    textView.setOnClickListener(new View.OnClickListener()
+    {
       @Override
-      public void onDismiss(DialogInterface dialog) {
-        checkFlag = false;
+      public void onClick(View v)
+      {
+          Intent intent = SingleCharActivity.newIntent(getContext(),s);
+          getContext().startActivity(intent);
+          dialog.dismiss();
+          checkFlag = false;
+      }
+    });
+
+    dialog.show();
+    dialog.setOnDismissListener(new DialogInterface.OnDismissListener()
+    {
+      @Override
+      public void onDismiss(DialogInterface dialog)
+      {
+         checkFlag = false;
       }
     });
   }
 
-  private class CameraHandlerThread extends HandlerThread {
+  private class CameraHandlerThread extends HandlerThread
+  {
 
     Handler mHandler;
 
-    public CameraHandlerThread(String name) {
-      super( name );
+    public CameraHandlerThread(String name)
+    {
+      super(name);
       start();
-      mHandler = new Handler( getLooper() );
+      mHandler = new Handler(getLooper());
     }
 
-    synchronized void notifyCameraOpened() {
+    synchronized void notifyCameraOpened()
+    {
       notify();
     }
 
     void openCamera() {
-      mHandler.post( new Runnable() {
-        @Override public void run() {
+      mHandler.post( new Runnable()
+      {
+        @Override public void run()
+        {
           openCameraOriginal();
           notifyCameraOpened();
         }
       } );
-      try {
+      try
+      {
         wait();
-      } catch (InterruptedException e) {
-        Log.w( TAG, "wait was interrupted" );
+      }
+      catch (InterruptedException e)
+      {
+        Log.w(TAG,"wait was interrupted");
       }
     }
   }
 
-  private void openCameraOriginal() {
-    try {
+  private void openCameraOriginal()
+  {
+    try
+    {
       mCamera = Camera.open();
-    } catch (Exception e) {
-      Log.d( TAG, "camera is not available" );
+    }
+    catch (Exception e)
+    {
+      Log.d(TAG,"camera is not available");
     }
   }
 }

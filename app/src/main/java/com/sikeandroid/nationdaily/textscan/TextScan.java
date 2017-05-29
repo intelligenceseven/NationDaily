@@ -26,7 +26,7 @@ import com.tianruiworkroomocr.Native;
 
 import static com.sikeandroid.nationdaily.utils.CameraParam.FLASH_CLOSE;
 
-public class TextScan extends AppCompatActivity implements Runnable {
+public class TextScan extends AppCompatActivity{
 
   private static ScanView scanView;
   private OCRScan mPreview;
@@ -209,12 +209,9 @@ public class TextScan extends AppCompatActivity implements Runnable {
         scanView.startScanMatchingAnim();
       }
     } );
-
       initGravitySensor();
       //sensorLis.notify();
 
-      Thread thread = new Thread(this);
-      thread.start();
 
   }
 
@@ -279,34 +276,5 @@ public class TextScan extends AppCompatActivity implements Runnable {
     return true;
   }
 
-    @Override
-    public void run() {
 
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        if(isDeviceMoving())
-        {
-            if(aniFlag != 0)
-            {
-                startScanAnim();
-                aniFlag = 0;
-            }
-        }
-        else
-        {
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            if(aniFlag != 1)
-            {
-                startScanMatchingAnim();
-                aniFlag = 1;
-            }
-        }
-    }
 }
