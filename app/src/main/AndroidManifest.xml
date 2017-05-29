@@ -49,10 +49,10 @@
     </activity>
     <activity
         android:name=".culture.CharTopicActivity"
-        android:label="解字" />
+        android:label="说文" />
     <activity
         android:name=".culture.CharCulActivity"
-        android:label="说文"></activity>
+        android:label="解字"></activity>
     <activity
         android:name=".about.AboutActivity"
         android:parentActivityName=".main.DailyNationDetailActivity"

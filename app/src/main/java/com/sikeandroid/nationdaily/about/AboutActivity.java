@@ -17,6 +17,5 @@ public class AboutActivity extends AppCompatActivity {
     if (actionBar != null) {
       actionBar.setDisplayHomeAsUpEnabled( true );
     }
-
   }
 }
