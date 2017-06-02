@@ -20,9 +20,9 @@
             android:textStyle="bold"/>
 
         <ImageView
+            android:id="@+id/people_img"
             android:layout_width="@dimen/img_width_height"
             android:layout_height="@dimen/img_width_height"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:src="@drawable/img3" />
+            android:layout_marginTop="@dimen/activity_vertical_margin" />
     </LinearLayout>
 </RelativeLayout>
