@@ -78,4 +78,9 @@
   <string name="swipe_finger_up_and_down">2017-4-3</string>
   <string name="click">公元221年</string>
 
+  <string name="about1">1.主界面</string>
+  <string name="about2">2.功能选择</string>
+  <string name="about3">3.AR换装</string>
+  <string name="about4">4.说文解字</string>
+
 </resources>

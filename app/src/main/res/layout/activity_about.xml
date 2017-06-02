@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.sikeandroid.nationdaily.about.AboutActivity"
+    android:background="@drawable/diwen4"
     >
   <android.support.design.widget.AppBarLayout
       android:layout_width="match_parent"
@@ -18,20 +19,78 @@
         android:background="@color/colorPrimary"
         />
   </android.support.design.widget.AppBarLayout>
-  <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text=""
-      />
-  <ImageView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      />
-  <Button
-      android:id="@+id/func_introduce"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_gravity="center"
-      android:text="功能向导"
-      />
+  <ScrollView
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical"
+        >
+      <TextView android:layout_gravity="center"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/about1"
+          />
+      <ImageView
+          android:id="@+id/about1"
+          android:layout_width="550px"
+          android:layout_height="910px"
+          android:layout_gravity="center"
+          android:layout_margin="10dp"
+
+          />
+      <TextView android:layout_gravity="center"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/about2"
+          />
+      <ImageView
+          android:id="@+id/about2"
+          android:layout_width="550px"
+          android:layout_height="910px"
+          android:layout_gravity="center"
+          android:layout_margin="10dp"
+          />
+      <TextView android:layout_gravity="center"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/about3"
+          />
+      <ImageView
+          android:id="@+id/about3"
+          android:layout_width="550px"
+          android:layout_height="910px"
+          android:layout_gravity="center"
+          android:layout_margin="10dp"
+
+          />
+      <TextView android:layout_gravity="center"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/about4"
+          />
+      <ImageView
+          android:id="@+id/about4"
+          android:layout_width="550px"
+          android:layout_height="910px"
+          android:layout_gravity="center"
+          android:layout_margin="10dp"
+
+          />
+      <Button
+          android:id="@+id/func_introduce"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center"
+          android:text="功能向导"
+          />
+      <Space
+          android:layout_width="match_parent"
+          android:layout_height="15dp"
+          />
+    </LinearLayout>
+  </ScrollView>
 </LinearLayout>
