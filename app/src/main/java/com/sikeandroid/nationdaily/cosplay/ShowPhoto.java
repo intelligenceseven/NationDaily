@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import com.bumptech.glide.Glide;
 
 public class ShowPhoto extends AppCompatActivity {
 
@@ -25,7 +26,8 @@ public class ShowPhoto extends AppCompatActivity {
     Uri uri = getIntent().getData();
     if (getIntent().getType().equals( "image/*" )) {
       ImageView view = new ImageView( this );
-      view.setImageURI( uri );
+      //view.setImageURI( uri );
+      Glide.with( this ).load( uri ).into( view );
       view.setLayoutParams( layoutParams );
       relativeLayout.addView( view );
     }

@@ -15,8 +15,10 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import com.bumptech.glide.Glide;
 import com.sikeandroid.nationdaily.R;
 import com.sikeandroid.nationdaily.main.DailyNationDetailActivity;
 
@@ -27,6 +29,7 @@ public class WelcomeActivity extends AppCompatActivity {
   private LinearLayout dotsLayout;
   private TextView[] dots;
   private int[] layouts;
+  private int[] images;
   private Button btnSkip, btnNext;
   private PrefManager prefManager;
 
@@ -58,6 +61,9 @@ public class WelcomeActivity extends AppCompatActivity {
     layouts = new int[] {
         R.layout.welcome_slide1, R.layout.welcome_slide2, R.layout.welcome_slide3,
         R.layout.welcome_slide4, R.layout.welcome_slide5
+    };
+    images = new int[] {
+        R.drawable.img1, R.drawable.img2, R.drawable.img3, R.drawable.img4, R.drawable.img5
     };
     //添加点
     addBottomDots( 0 );
@@ -166,6 +172,8 @@ public class WelcomeActivity extends AppCompatActivity {
       layoutInflater = (LayoutInflater) getSystemService( Context.LAYOUT_INFLATER_SERVICE );
 
       View view = layoutInflater.inflate( layouts[position], container, false );
+      ImageView peopleImg = (ImageView) view.findViewById( R.id.people_img );
+      Glide.with( WelcomeActivity.this ).load( images[position] ).into( peopleImg );
       container.addView( view );
       return view;
     }

@@ -10,9 +10,5 @@
       android:icon="@drawable/ic_menu_scan"
       android:title="文字识别"
       app:showAsAction="always" />
-  <item
-      android:id="@+id/guide_again"
-      android:title="引导"
-      app:showAsAction="never" />
 
 </menu>

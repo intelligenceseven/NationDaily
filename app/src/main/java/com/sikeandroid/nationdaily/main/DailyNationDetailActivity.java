@@ -93,10 +93,6 @@ public class DailyNationDetailActivity extends BaseAppCompatActivity
             }, Manifest.permission.CAMERA );
 
             break;
-          case R.id.guide_again:
-            new PrefManager( DailyNationDetailActivity.this ).setFirstTimeLaunch( true );
-            finish();
-            break;
         }
         return true;
       }
@@ -256,7 +252,6 @@ public class DailyNationDetailActivity extends BaseAppCompatActivity
   }
 
   @Override public void onItemSelected(int position) {
-    Intent intent;
     switch (position) {
       case POS_HANZI: // 汉字Acticity启动
         Intent CharCulture = new Intent( DailyNationDetailActivity.this, CharTopicActivity.class );

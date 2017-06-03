@@ -19,6 +19,7 @@
       android:theme="@style/AppTheme">
     <activity
         android:name=".main.DailyNationDetailActivity"
+        android:launchMode="singleTask"
         android:screenOrientation="portrait" />
     <activity
         android:name=".main.NationHistoryActivity"
@@ -55,6 +56,7 @@
         android:label="解字"></activity>
     <activity
         android:name=".about.AboutActivity"
+        android:label="关于"
         android:parentActivityName=".main.DailyNationDetailActivity"
         android:screenOrientation="portrait" />
     <activity android:name=".culture.SingleCharActivity"

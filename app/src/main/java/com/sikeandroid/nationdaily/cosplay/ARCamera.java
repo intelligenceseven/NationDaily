@@ -168,6 +168,7 @@ public class ARCamera extends AppCompatActivity
 
   public static void setPosition() {
     clothes.setImageResource( nationClothesId );
+    //Glide.with( MyApplication.getContext() ).load( nationClothesId ).into( clothes );
     //定义布局
     FrameLayout.LayoutParams params =
         new FrameLayout.LayoutParams( FrameLayout.LayoutParams.MATCH_PARENT,

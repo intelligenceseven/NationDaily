@@ -17,14 +17,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.Toast;
-
 import com.sikeandroid.nationdaily.R;
 import com.sikeandroid.nationdaily.utils.OCRScan;
 import com.sikeandroid.nationdaily.utils.SettingsCamera;
 import com.sikeandroid.nationdaily.utils.TakePhoto;
 import com.tianruiworkroomocr.Native;
-
-import static com.sikeandroid.nationdaily.utils.CameraParam.FLASH_CLOSE;
 
 public class TextScan extends AppCompatActivity{
 
@@ -263,11 +260,6 @@ public class TextScan extends AppCompatActivity{
     switch (item.getItemId()) {
       case R.id.flash_switch:
         mPreview.flashLightUtils();
-        if (flashFlag == FLASH_CLOSE) {
-          item.setIcon( R.drawable.ic_flash_off_black_24dp );
-        } else {
-          item.setIcon( R.drawable.ic_flash_on_black_24dp );
-        }
         break;
       case android.R.id.home:
         finish();
