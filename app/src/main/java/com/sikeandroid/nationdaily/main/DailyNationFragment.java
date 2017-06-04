@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gjiazhe.panoramaimageview.GyroscopeObserver;
@@ -18,6 +19,7 @@ import com.sikeandroid.nationdaily.main.data.DailyNation;
 import com.sikeandroid.nationdaily.main.data.DailyNationLab;
 public class DailyNationFragment extends Fragment {
 
+    public static final String NATION_HISTORY_URL = "NationHistoryUrl";
     private DailyNation mDailyNation;
     private int mImage;
     private PanoramaImageView mImageView;
@@ -27,6 +29,7 @@ public class DailyNationFragment extends Fragment {
     private GyroscopeObserver gyroscopeObserver;
 
     private static final String ARG_DAILYNATION_DATE = "dailynation_date";
+    private ImageView mImageTime;
 
     public static DailyNationFragment newInstance(String date)
     {
@@ -49,7 +52,6 @@ public class DailyNationFragment extends Fragment {
         }
         mDailyNation = DailyNationLab.get(getActivity()).getDailyNation(date);
         mImage = mDailyNation.getImage();
-
 
     }
 
@@ -77,6 +79,7 @@ public class DailyNationFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(),NationHistoryActivity.class);
+                intent.putExtra(NATION_HISTORY_URL,mDailyNation.getUrl());
                 startActivity(intent);
             }
         });
@@ -89,6 +92,17 @@ public class DailyNationFragment extends Fragment {
         String time = mDailyNation.getDate();
         time = time.replaceFirst("-","年\n");time = time.replaceFirst("-","月");time +="日";
         mTimeTextView.setText(time);
+
+        mImageTime = (ImageView)v.findViewById(R.id.image_time);
+        mImageTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(),NationHistoryActivity.class);
+                intent.putExtra(NATION_HISTORY_URL,"http://blog.xtwroot.com/categories/%E6%AF%8F%E6%97%A5%E6%B0%91%E6%97%8F/");
+                startActivity(intent);
+            }
+        });
+
         return v;
     }
 

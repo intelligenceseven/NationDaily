@@ -9,15 +9,23 @@ public class DailyNation {
     private String mDate;
     private int mImage;
     private int mSuspect;
+    private String mUrl;
 
+    public String getUrl() {
+        return mUrl;
+    }
 
+    public void setUrl(String url) {
+        mUrl = url;
+    }
 
-    public DailyNation(int image,String date, String name, int suspect)
+    public DailyNation(int image, String date, String name, int suspect,String url)
     {
         mImage = image;
         mName = name;
         mSuspect = suspect;
         mDate = date;
+        mUrl = url;
     }
 
     public UUID getId() {
