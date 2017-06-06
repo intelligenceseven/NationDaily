@@ -374,10 +374,8 @@ public class DailyNationDetailActivity extends BaseAppCompatActivity
   }
 
   private DrawerItem createItemFor(int position) {
-    return new SimpleItem( screenIcons[position], screenTitles[position] ).withIconTint(
-        color( R.color.textColorPrimary ) )
+    return new SimpleItem( screenIcons[position], screenTitles[position] )
         .withTextTint( color( R.color.textColorPrimary ) )
-        .withSelectedIconTint( color( R.color.colorAccent ) )
         .withSelectedTextTint( color( R.color.colorAccent ) );
   }
 
