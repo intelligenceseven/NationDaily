@@ -6,12 +6,16 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.sikeandroid.nationdaily.R;
 import com.sikeandroid.nationdaily.culture.data.CharLab;
+import com.sikeandroid.nationdaily.textscan.CharDetailsActivity;
+
+import static com.sikeandroid.nationdaily.main.DailyNationFragment.NATION_HISTORY_URL;
 
 /********************************************************************************
  * using for:
@@ -19,7 +23,7 @@ import com.sikeandroid.nationdaily.culture.data.CharLab;
  * @author 西唐王, xtwyzh@gmail.com,blog.xtwroot.com
  * xtwroot Copyrights (c) 2017. All rights reserved.
  ********************************************************************************/
-public class SingleCharActivity extends AppCompatActivity {
+public class SingleCharActivity extends AppCompatActivity{
 
 
     String mChar;
@@ -48,13 +52,24 @@ public class SingleCharActivity extends AppCompatActivity {
         }
 
         mChar = getIntent().getStringExtra(CHARKAY);
-        CharLab charLab = CharLab.get(this);
+        final CharLab charLab = CharLab.get(this);
         if(CharLab.hasChar(mChar))
         {
             mCharImageView = (ImageView) findViewById(R.id.char_image);
             Glide.with(this).load(charLab.getChar(mChar).getImage()).into(mCharImageView);
+            mCharImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(SingleCharActivity.this,CharDetailsActivity.class);
+                    intent.putExtra(NATION_HISTORY_URL,charLab.getChar(mChar).getImageUrl());
+                    startActivity(intent);
+                }
+            });
         }
+
+
     }
+
 
 
 }

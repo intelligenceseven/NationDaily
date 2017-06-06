@@ -30,11 +30,16 @@ public class CharLab
     {
         mChars = new ArrayList<>();
 
-        mChars.add(new Char("金", R.drawable.jin,""));
-        mChars.add(new Char("木", R.drawable.mu,""));
-        mChars.add(new Char("水", R.drawable.shui,""));
-        mChars.add(new Char("火", R.drawable.huo,""));
-        mChars.add(new Char("土", R.drawable.tu,""));
+        mChars.add(new Char("金", R.drawable.jin,"","http://www.xtwroot.top/404.png"));
+        mChars.add(new Char("木", R.drawable.mu,"","http://www.xtwroot.top/404.png"));
+        mChars.add(new Char("水", R.drawable.shui,"","http://www.xtwroot.top/404.png"));
+        mChars.add(new Char("火", R.drawable.huo,"","http://www.xtwroot.top/404.png"));
+        mChars.add(new Char("土", R.drawable.tu,"","http://www.xtwroot.top/404.png"));
+
+        mChars.add(new Char("真", R.drawable.zhen,"","http://www.xtwroot.top/zhen_details.jpg"));
+        mChars.add(new Char("善", R.drawable.shan,"","http://www.xtwroot.top/shan_details.jpg"));
+        mChars.add(new Char("美", R.drawable.mei,"","http://www.xtwroot.top/mei_details.jpg"));
+
     }
 
     public List<Char> getChars()
