@@ -1,69 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.sikeandroid.nationdaily"
-    android:versionName="1.0.0">
+          package="com.sikeandroid.nationdaily"
+          android:versionName="1.0.0">
 
-  <uses-permission android:name="android.permission.CAMERA" />
-  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-  <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
 
-  <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera"/>
 
-  <application
-      android:name="com.sikeandroid.nationdaily.utils.MyApplication"
-      android:allowBackup="true"
-      android:icon="@mipmap/ic_launcher"
-      android:label="@string/app_name"
-      android:roundIcon="@mipmap/ic_launcher_round"
-      android:supportsRtl="true"
-      android:theme="@style/AppTheme">
-    <activity
-        android:name=".main.DailyNationDetailActivity"
-        android:launchMode="singleTask"
-        android:screenOrientation="portrait" />
-    <activity
-        android:name=".main.NationHistoryActivity"
-        android:screenOrientation="portrait" />
-    <activity
-        android:name=".cosplay.ARCosplay"
-        android:label="AR换装"
-        android:parentActivityName=".main.DailyNationDetailActivity"
-        android:screenOrientation="portrait" />
-    <activity
-        android:name=".cosplay.ARCamera"
-        android:screenOrientation="portrait" />
-    <activity
-        android:name=".cosplay.ShowPhoto"
-        android:screenOrientation="portrait" />
-    <activity
-        android:name=".textscan.TextScan"
-        android:label="文字识别"
-        android:parentActivityName=".main.DailyNationDetailActivity"
-        android:screenOrientation="portrait" />
-    <activity
-        android:name=".guide.WelcomeActivity"
-        android:screenOrientation="portrait">
-      <intent-filter>
-        <action android:name="android.intent.action.MAIN" />
-        <category android:name="android.intent.category.LAUNCHER" />
-      </intent-filter>
-    </activity>
-    <activity
-        android:name=".culture.CharTopicActivity"
-        android:label="说文" />
-    <activity
-        android:name=".culture.CharCulActivity"
-        android:label="解字"></activity>
-    <activity
-        android:name=".about.AboutActivity"
-        android:label="关于"
-        android:parentActivityName=".main.DailyNationDetailActivity"
-        android:screenOrientation="portrait" />
-    <activity android:name=".culture.SingleCharActivity"
-        android:parentActivityName=".textscan.TextScan">
+    <application
+        android:name=".utils.MyApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".main.DailyNationDetailActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".main.NationHistoryActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".cosplay.ARCosplay"
+            android:label="AR换装"
+            android:parentActivityName=".main.DailyNationDetailActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".cosplay.ARCamera"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".cosplay.ShowPhoto"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".textscan.TextScan"
+            android:label="文字识别"
+            android:parentActivityName=".main.DailyNationDetailActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".guide.WelcomeActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
 
-    </activity>
-  </application>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".culture.CharTopicActivity"
+            android:label="说文"/>
+        <activity
+            android:name=".culture.CharCulActivity"
+            android:label="解字"/>
+        <activity
+            android:name=".about.AboutActivity"
+            android:label="关于"
+            android:parentActivityName=".main.DailyNationDetailActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".culture.SingleCharActivity"
+            android:parentActivityName=".textscan.TextScan">
+        </activity>
+        <activity android:name=".textscan.CharDetailsActivity"
+            android:parentActivityName=".culture.SingleCharActivity">
+        </activity>
+    </application>
 
 </manifest>

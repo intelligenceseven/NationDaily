@@ -19,7 +19,6 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.sikeandroid.nationdaily.culture.SingleCharActivity;
 import com.sikeandroid.nationdaily.textscan.CharDialog;
@@ -139,7 +138,6 @@ public class OCRScan extends CameraParam implements Camera.PreviewCallback {
         String mwholeWord[] = Native.getWholeTextLineResult();
         if (mwholeWord != null && mwholeWord[0].length() == 1 && isChinese(mwholeWord[0].charAt(0))) {
           Log.e( TAG, mwholeWord[0] );
-          Toast.makeText( getContext(), mwholeWord[0], Toast.LENGTH_SHORT ).show();
           dialog(mwholeWord[0]);
           checkFlag = true;
         }

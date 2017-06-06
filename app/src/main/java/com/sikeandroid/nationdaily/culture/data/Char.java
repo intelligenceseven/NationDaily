@@ -11,11 +11,22 @@ public class Char
     private String mName;
     private int mImage;
     private String mSummary;
+    private String mImageUrl;
 
-    public Char(String name, int image, String summary) {
+    public Char(String name, int image, String summary, String imageUrl) {
         mName = name;
         mImage = image;
         mSummary = summary;
+        mImageUrl = imageUrl;
+    }
+
+    public String getImageUrl() {
+
+        return mImageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        mImageUrl = imageUrl;
     }
 
     public String getName() {

@@ -5,15 +5,13 @@
     <item>每日民族</item>
     <item>说文解字</item>
     <item>AR换装</item>
-    <item>关于</item>
     <item />
   </string-array>
 
   <array name="ld_activityScreenIcons">
-    <item>@drawable/ic_home_outline_grey600_24dp</item>
-    <item>@drawable/ic_account_outline_grey600_24dp</item>
-    <item>@drawable/ic_email_outline_grey600_24dp</item>
-    <item>@drawable/ic_cart_outline_grey600_24dp</item>
+    <item>@drawable/shuowenjiezi</item>
+    <item>@drawable/meirimingzu</item>
+    <item>@drawable/arhuanzhuang</item>
     <item>0</item>
     <item>@drawable/ic_logout_grey600_24dp</item>
   </array>

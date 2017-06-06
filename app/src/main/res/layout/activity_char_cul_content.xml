@@ -24,9 +24,9 @@
                     android:id="@+id/char_image"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="25dp"
+                    android:layout_margin="10dp"
                     android:scaleType="fitXY"
-                    android:src="@drawable/yi">
+                    android:src="@drawable/page404">
                 </ImageView>
         </LinearLayout>
 </android.support.v7.widget.CardView>

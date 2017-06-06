@@ -1,21 +1,23 @@
 package com.sikeandroid.nationdaily.culture;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.sikeandroid.nationdaily.R;
+import com.sikeandroid.nationdaily.textscan.CharDetailsActivity;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.sikeandroid.nationdaily.main.DailyNationFragment.NATION_HISTORY_URL;
 
 public class CharCulActivity extends AppCompatActivity {
     public static final String TOPIC_NAME="topic_name";
@@ -68,18 +70,44 @@ public class CharCulActivity extends AppCompatActivity {
             charViewList.add(view4);
             charViewList.add(view5);
         }else if(topicId==2){
+
             View view1=View.inflate(this,R.layout.activity_char_cul_content,null);
+            view1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(CharCulActivity.this,CharDetailsActivity.class);
+                    intent.putExtra(NATION_HISTORY_URL,"http://www.xtwroot.top/zhen_details.jpg");
+                    startActivity(intent);
+                }
+            });
             ImageView charImage1= (ImageView) view1.findViewById(R.id.char_image);
-            Glide.with(this).load(R.drawable.an).into(charImage1);
+            Glide.with(this).load(R.drawable.zhen).into(charImage1);
             View view2=View.inflate(this,R.layout.activity_char_cul_content,null);
+            view2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(CharCulActivity.this,CharDetailsActivity.class);
+                    intent.putExtra(NATION_HISTORY_URL,"http://www.xtwroot.top/shan_details.jpg");
+                    startActivity(intent);
+                }
+            });
             ImageView charImage2= (ImageView) view2.findViewById(R.id.char_image);
-            Glide.with(this).load(R.drawable.fa).into(charImage2);
+            Glide.with(this).load(R.drawable.shan).into(charImage2);
             View view3=View.inflate(this,R.layout.activity_char_cul_content,null);
+            view3.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(CharCulActivity.this,CharDetailsActivity.class);
+                    intent.putExtra(NATION_HISTORY_URL,"http://www.xtwroot.top/mei_details.jpg");
+                    startActivity(intent);
+                }
+            });
             ImageView charImage3= (ImageView) view3.findViewById(R.id.char_image);
-            Glide.with(this).load(R.drawable.hao).into(charImage3);
+            Glide.with(this).load(R.drawable.mei).into(charImage3);
             charViewList.add(view1);
             charViewList.add(view2);
             charViewList.add(view3);
+
         }else if(topicId==3){
             View view1=View.inflate(this,R.layout.activity_char_cul_content,null);
             ImageView charImage1= (ImageView) view1.findViewById(R.id.char_image);
