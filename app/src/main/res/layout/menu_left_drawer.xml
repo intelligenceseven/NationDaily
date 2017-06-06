@@ -19,6 +19,7 @@
         android:paddingRight="24dp">
 
         <ImageView
+            android:id="@+id/solar_term"
             style="@style/Base.CardView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

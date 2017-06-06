@@ -381,6 +381,7 @@ public class ARCamera extends AppCompatActivity
     double lineLen2 = getLineLength( spt2, ept2 );
 
     //当两指距离过近，不要再进行缩放了。
+    float[] f = new float[9];
     if (lineLen1 >= 5 && lineLen2 >= 5) {
       double dScale = lineLen2 / lineLen1;
       scale *= dScale;

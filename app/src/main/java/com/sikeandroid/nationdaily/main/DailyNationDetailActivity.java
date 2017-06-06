@@ -18,11 +18,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import com.sikeandroid.nationdaily.R;
 import com.sikeandroid.nationdaily.about.AboutActivity;
 import com.sikeandroid.nationdaily.cosplay.ARCosplay;
 import com.sikeandroid.nationdaily.culture.CharTopicActivity;
-import com.sikeandroid.nationdaily.guide.PrefManager;
 import com.sikeandroid.nationdaily.main.data.DailyNation;
 import com.sikeandroid.nationdaily.main.data.DailyNationLab;
 import com.sikeandroid.nationdaily.main.menu.DrawerAdapter;
@@ -31,6 +31,7 @@ import com.sikeandroid.nationdaily.main.menu.SimpleItem;
 import com.sikeandroid.nationdaily.main.menu.SpaceItem;
 import com.sikeandroid.nationdaily.textscan.TextScan;
 import com.sikeandroid.nationdaily.utils.BaseAppCompatActivity;
+import com.sikeandroid.nationdaily.utils.SolarTerm;
 import com.yarolegovich.slidingrootnav.SlidingRootNav;
 import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder;
 import java.io.File;
@@ -38,7 +39,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.ParseException;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 public class DailyNationDetailActivity extends BaseAppCompatActivity
@@ -64,6 +67,7 @@ public class DailyNationDetailActivity extends BaseAppCompatActivity
 
   private ViewPager mViewPager;
   private List<DailyNation> mDailyNations;
+  private ImageView solarTerm;
 
   private static final String EXTRA_DAILYNATION_DATE =
       "com.sikeandroid.nationdaily.dailynation_DATE";
@@ -137,6 +141,9 @@ public class DailyNationDetailActivity extends BaseAppCompatActivity
             createItemFor( POS_AR ), createItemFor( POS_ABOUT ), new SpaceItem( 48 ) ) );
     adapter.setListener( this );
 
+    solarTerm = (ImageView) findViewById( R.id.solar_term );
+
+    setSolarTermIcon();
     RecyclerView list = (RecyclerView) findViewById( R.id.list );
     list.setNestedScrollingEnabled( true );
     list.setLayoutManager( new LinearLayoutManager( this ) );
@@ -176,6 +183,92 @@ public class DailyNationDetailActivity extends BaseAppCompatActivity
         }
       }
     }, SPLASH_DISPLAY_LENGHT );
+  }
+
+  private void setSolarTermIcon() {
+    //SimpleDateFormat df = new SimpleDateFormat( "yyyy年MM月dd日" );
+    Calendar c = Calendar.getInstance();
+    try {
+      String str = SolarTerm.getSolarTerm( c.get( Calendar.YEAR ), c.get( Calendar.MONTH ) + 1,
+          c.get( Calendar.DAY_OF_MONTH ) );
+      switch (str) {
+
+        case "立春":
+          solarTerm.setImageResource( R.drawable.lichun );
+          break;
+        case "雨水":
+          solarTerm.setImageResource( R.drawable.yushui );
+          break;
+        case "惊蛰":
+          solarTerm.setImageResource( R.drawable.jingzhe );
+          break;
+        case "春分":
+          solarTerm.setImageResource( R.drawable.chunfen );
+          break;
+        case "清明":
+          solarTerm.setImageResource( R.drawable.qingming );
+          break;
+        case "谷雨":
+          solarTerm.setImageResource( R.drawable.guyu );
+          break;
+        case "立夏":
+          solarTerm.setImageResource( R.drawable.lixia );
+          break;
+        case "小满":
+          solarTerm.setImageResource( R.drawable.xiaoman );
+          break;
+        case "芒种":
+          solarTerm.setImageResource( R.drawable.mangzhong );
+          break;
+        case "夏至":
+          solarTerm.setImageResource( R.drawable.xiazhi );
+          break;
+        case "小暑":
+          solarTerm.setImageResource( R.drawable.xiaoshu );
+          break;
+        case "大暑":
+          solarTerm.setImageResource( R.drawable.dashu );
+          break;
+        case "立秋":
+          solarTerm.setImageResource( R.drawable.liqiu );
+          break;
+        case "处暑":
+          solarTerm.setImageResource( R.drawable.chushu );
+          break;
+        case "白露":
+          solarTerm.setImageResource( R.drawable.bailu );
+          break;
+        case "秋分":
+          solarTerm.setImageResource( R.drawable.qiufen );
+          break;
+        case "寒露":
+          solarTerm.setImageResource( R.drawable.hanlu );
+          break;
+        case "霜降":
+          solarTerm.setImageResource( R.drawable.shuangjiang );
+          break;
+        case "立冬":
+          solarTerm.setImageResource( R.drawable.lidong );
+          break;
+        case "小雪":
+          solarTerm.setImageResource( R.drawable.xiaoxue );
+          break;
+        case "大雪":
+          solarTerm.setImageResource( R.drawable.daxue );
+          break;
+        case "冬至":
+          solarTerm.setImageResource( R.drawable.dongzhi );
+          break;
+        case "小寒":
+          solarTerm.setImageResource( R.drawable.xiaohan );
+          break;
+        case "大寒":
+          solarTerm.setImageResource( R.drawable.dahan );
+          break;
+      }
+    } catch (ParseException e) {
+      e.printStackTrace();
+    }
   }
 
   public boolean fileIsExists(String filePath) {
@@ -243,11 +336,9 @@ public class DailyNationDetailActivity extends BaseAppCompatActivity
           out.write( buf, 0, len );
         }
         out.close();
-
       } catch (Exception e) {
         e.printStackTrace();
       }
-
     }
   }
 
