@@ -19,8 +19,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.ImageView;
+
 import com.sikeandroid.nationdaily.R;
-import com.sikeandroid.nationdaily.about.AboutActivity;
 import com.sikeandroid.nationdaily.cosplay.ARCosplay;
 import com.sikeandroid.nationdaily.culture.CharTopicActivity;
 import com.sikeandroid.nationdaily.main.data.DailyNation;
@@ -34,6 +34,7 @@ import com.sikeandroid.nationdaily.utils.BaseAppCompatActivity;
 import com.sikeandroid.nationdaily.utils.SolarTerm;
 import com.yarolegovich.slidingrootnav.SlidingRootNav;
 import com.yarolegovich.slidingrootnav.SlidingRootNavBuilder;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -296,7 +297,7 @@ public class DailyNationDetailActivity extends BaseAppCompatActivity
   private void CopyAssets(String assetDir, String dir) {
     String[] files;
     try {
-      files = this.getResources().getAssets().list( assetDir );
+      files = this.getResources().getAssets().list( assetDir ) ;
     } catch (IOException e1) {
       return;
     }
@@ -366,8 +367,7 @@ public class DailyNationDetailActivity extends BaseAppCompatActivity
         mSlidingRootNav.closeMenu();
         break;
       case POS_ABOUT: // 关于界面启动
-        startActivity( new Intent( this, AboutActivity.class ) );
-        mSlidingRootNav.closeMenu();
+
         break;
     }
     //mSlidingRootNav.closeMenu();
