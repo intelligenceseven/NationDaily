@@ -79,7 +79,7 @@
             android:layout_margin="15dp"
             android:background="#fff"
             android:scaleType="centerCrop"
-            android:src="@drawable/mz_2bai"
+            android:src="@drawable/img1"
             />
         <ImageButton
             android:id="@+id/take_photo"

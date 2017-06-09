@@ -40,22 +40,9 @@ public class DailyCalendarCount {
     c.setTimeZone( TimeZone.getTimeZone( "GMT+8:00" ) );
 
     for (int i = 0; i < 56; i++) {
-      //if(month!=0){
-      //    if(day<=0){
-      //        day+=MaxDayFromDay_OF_MONTH(year,month);
-      //        month--;
-      //        if(day<=0){
-      //            day+=MaxDayFromDay_OF_MONTH(year,month);
-      //            month--;
-      //        }
-      //    }
-      //}else{
-      //    month+=12;
-      //    year--;
-      //}= )
       year = c.get( Calendar.YEAR );
       month = c.get( Calendar.MONTH ) + 1;
-      day = c.get( Calendar.DAY_OF_MONTH );
+      day = c.get(Calendar.DAY_OF_MONTH);
 
       String date = year + "-" + month + "-" + day;
       dates.add( date );

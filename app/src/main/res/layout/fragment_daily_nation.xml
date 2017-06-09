@@ -33,17 +33,14 @@
             android:layout_marginBottom="3dp"
             android:background="@drawable/bg_border">
 
-            <com.gjiazhe.panoramaimageview.PanoramaImageView
+            <ImageView
                 android:id="@+id/image_minzu"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="3"
-                app:piv_enablePanoramaMode="true"
-                app:piv_show_scrollbar="false"
-                app:piv_invertScrollDirection="true"
-                android:scaleType="fitStart"
-                android:src="@drawable/mz_6zang">
-            </com.gjiazhe.panoramaimageview.PanoramaImageView>
+                android:scaleType="centerCrop"
+                android:src="@drawable/xiangkuan">
+            </ImageView>
 
             <ImageView
                 android:layout_weight="1"
@@ -79,7 +76,7 @@
             android:textSize="12sp"/>
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/text_greeting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|center"

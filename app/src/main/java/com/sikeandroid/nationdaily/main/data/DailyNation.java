@@ -7,9 +7,34 @@ public class DailyNation {
     private UUID mId;
     private String mName;
     private String mDate;
-    private int mImage;
-    private int mSuspect;
+    private String mGreeting;
     private String mUrl;
+    private String mDescribe;
+    private String mImageUrl;
+
+    public String getGreeting() {
+        return mGreeting;
+    }
+
+    public void setGreeting(String greeting) {
+        mGreeting = greeting;
+    }
+
+    public String getDescribe() {
+        return mDescribe;
+    }
+
+    public void setDescribe(String describe) {
+        mDescribe = describe;
+    }
+
+    public String getImageUrl() {
+        return mImageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        mImageUrl = imageUrl;
+    }
 
     public String getUrl() {
         return mUrl;
@@ -21,12 +46,12 @@ public class DailyNation {
 
     public DailyNation(int image, String date, String name, int suspect,String url)
     {
-        mImage = image;
         mName = name;
-        mSuspect = suspect;
         mDate = date;
         mUrl = url;
     }
+
+    public DailyNation(){}
 
     public UUID getId() {
         return mId;
@@ -60,19 +85,4 @@ public class DailyNation {
         mDate = date;
     }
 
-    public int getImage() {
-        return mImage;
-    }
-
-    public void setImage(int image) {
-        mImage = image;
-    }
-
-    public int getSuspect() {
-        return mSuspect;
-    }
-
-    public void setSuspect(int suspect) {
-        mSuspect = suspect;
-    }
 }

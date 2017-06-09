@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.StrictMode;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.Nullable;
@@ -76,6 +77,11 @@ public class DailyNationDetailActivity extends BaseAppCompatActivity
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate( savedInstanceState );
     setContentView( R.layout.activity_nation_daily_pager );
+
+    if (android.os.Build.VERSION.SDK_INT > 9) {
+      StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+      StrictMode.setThreadPolicy(policy);
+    }
 
     Toolbar toolbar = (Toolbar) findViewById( R.id.toolbar );
     toolbar.inflateMenu( R.menu.activity_main );

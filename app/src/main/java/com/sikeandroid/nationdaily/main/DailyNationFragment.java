@@ -12,8 +12,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.gjiazhe.panoramaimageview.GyroscopeObserver;
-import com.gjiazhe.panoramaimageview.PanoramaImageView;
 import com.sikeandroid.nationdaily.R;
 import com.sikeandroid.nationdaily.main.data.DailyNation;
 import com.sikeandroid.nationdaily.main.data.DailyNationLab;
@@ -21,8 +21,7 @@ public class DailyNationFragment extends Fragment {
 
     public static final String NATION_HISTORY_URL = "NationHistoryUrl";
     private DailyNation mDailyNation;
-    private int mImage;
-    private PanoramaImageView mImageView;
+    private ImageView mImageView;
     private TextView mNameTextView;
     private TextView mSuspectTextView;
     private TextView mTimeTextView;
@@ -30,6 +29,7 @@ public class DailyNationFragment extends Fragment {
 
     private static final String ARG_DAILYNATION_DATE = "dailynation_date";
     private ImageView mImageTime;
+    private TextView mGreetingTextView;
 
     public static DailyNationFragment newInstance(String date)
     {
@@ -51,8 +51,6 @@ public class DailyNationFragment extends Fragment {
             date = (String)bundle.getSerializable(ARG_DAILYNATION_DATE);
         }
         mDailyNation = DailyNationLab.get(getActivity()).getDailyNation(date);
-        mImage = mDailyNation.getImage();
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -68,13 +66,12 @@ public class DailyNationFragment extends Fragment {
         // The default value is π/9.
         gyroscopeObserver.setMaxRotateRadian(Math.PI/9);
 
-        mImageView = (PanoramaImageView)v.findViewById(R.id.image_minzu);
+        mImageView = (ImageView)v.findViewById(R.id.image_minzu);
         // Set GyroscopeObserver for PanoramaImageView.
-        mImageView.setGyroscopeObserver(gyroscopeObserver);
 
         //mImageView = (ImageView)v.findViewById(R.id.image_minzu);
-        //Glide.with( this ).load( mImage ).into( mImageView );
-        mImageView.setImageDrawable(getResources().getDrawable(mImage));
+        Glide.with( this ).load( mDailyNation.getImageUrl() ).into( mImageView );
+        //mImageView.setImageDrawable(getResources().getDrawable(mImage));
         mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,7 +84,7 @@ public class DailyNationFragment extends Fragment {
         mNameTextView = (TextView)v.findViewById(R.id.text_minzu);
         mNameTextView.setText(mDailyNation.getName());
         mSuspectTextView = (TextView)v.findViewById(R.id.text_minzumiaoshu);
-        mSuspectTextView.setText(getResources().getText(mDailyNation.getSuspect()));
+        mSuspectTextView.setText(mDailyNation.getDescribe());
         mTimeTextView = (TextView)v.findViewById(R.id.text_time);
         String time = mDailyNation.getDate();
         time = time.replaceFirst("-","年\n");time = time.replaceFirst("-","月");time +="日";
@@ -103,19 +100,20 @@ public class DailyNationFragment extends Fragment {
             }
         });
 
+        mGreetingTextView = (TextView) v.findViewById(R.id.text_greeting);
+        mGreetingTextView.setText(mDailyNation.getGreeting());
+
         return v;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        gyroscopeObserver.register(getContext());
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        gyroscopeObserver.unregister();
     }
 
 }
