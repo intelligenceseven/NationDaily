@@ -6,7 +6,7 @@
 ## 运行环境
 
 + Android（MinAPI:23 安卓6.0）
-    + apk：链接: https://pan.baidu.com/s/1miE5K16 密码: gy5a
+    + apk：链接: http://pan.baidu.com/s/1c1WSwnu 密码: z8tj
     
 ## 功能列表
 
