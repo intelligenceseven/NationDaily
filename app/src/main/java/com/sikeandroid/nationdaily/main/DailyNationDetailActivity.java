@@ -22,6 +22,7 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 
 import com.sikeandroid.nationdaily.R;
+import com.sikeandroid.nationdaily.about.AboutActivity;
 import com.sikeandroid.nationdaily.cosplay.ARCosplay;
 import com.sikeandroid.nationdaily.culture.CharTopicActivity;
 import com.sikeandroid.nationdaily.main.data.DailyNation;
@@ -373,7 +374,9 @@ public class DailyNationDetailActivity extends BaseAppCompatActivity
         mSlidingRootNav.closeMenu();
         break;
       case POS_ABOUT: // 关于界面启动
-
+        Intent aboutIntent = new Intent( DailyNationDetailActivity.this, AboutActivity.class );
+        startActivity( aboutIntent );
+        mSlidingRootNav.closeMenu();
         break;
     }
     //mSlidingRootNav.closeMenu();
