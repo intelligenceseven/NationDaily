@@ -7,7 +7,7 @@
 
     <Space
         android:layout_width="wrap_content"
-        android:layout_height="50dp" />
+        android:layout_height="40dp" />
 
 
     <LinearLayout
@@ -21,8 +21,8 @@
         <ImageView
             android:id="@+id/solar_term"
             style="@style/Base.CardView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:layout_height="80dp"
             android:src="@drawable/mangzhong"/>
 
 
@@ -30,7 +30,7 @@
 
     <Space
         android:layout_width="wrap_content"
-        android:layout_height="100dp" />
+        android:layout_height="70dp" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/list"
